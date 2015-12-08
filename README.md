@@ -7,4 +7,4 @@ Xuanzhe Wang
 Yudi Wang
 
 # Demo
-[demo entrence](http://charlesxsh.github.io/HTML5VideoPlayer/)
+[demo entrence](http://charlesxsh.github.io/HTML5VideoPlayer/VideoPlayer/)
