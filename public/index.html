@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+    <!--
+      CS4241 Final Project
+      Name: Xuanzhe Wang
+            Yudi Wang
+            Shihao Xia
+    -->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="js/video.js"></script>
+        <title>
+        </title>
+    </head>
+
+    <body>
+        <header>
+        <!-- open file(local/remote), player history, theme-->
+            <div id="side_bar">
+                <div id="file_locator"></div>
+                <div id="view_history"></div>
+                <div id="theme_picker"></div>
+            </div>
+        </header>
+
+        <section>
+            <div id="playerarea"></div>
+        </section>
+        
+        <footer>
+        </footer>
+    </body>
+
+    <script type="text/javascript">
+        var vp = new VideoPlayer(document.getElementById('playerarea'))
+        vp.setup("video/big_buck_bunny.mp4","video/mp4")
+        vp.play()
+    </script>
+</html>
