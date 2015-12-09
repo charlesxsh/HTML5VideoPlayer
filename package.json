@@ -1,0 +1,17 @@
+{
+  "name": "html5videoplayer",
+  "version": "1.0.0",
+  "description": "the final project",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.9.8",
+    "mocha": "^2.3.3"
+  },
+  "author": "Shihao Xia, Yudi Wang, Xuanzhe Wang",
+  "license": "MIT"
+}
