@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--
+  CS4241 Final Project
+  Name: Xuanzhe Wang
+        Yudi Wang
+        Shihao Xia
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="script/video.js"></script>
+    <title>
+    </title>
+  </head>
+
+  <body>
+    <div id="playerarea"></div>
+  </body>
+
+  <script type="text/javascript">
+    var vp = new VideoPlayer(document.getElementById('playerarea'))
+    vp.setup("src/big_buck_bunny.mp4","video/mp4")
+    vp.play()
+  </script>
+</html>
