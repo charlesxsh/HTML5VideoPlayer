@@ -72,25 +72,19 @@ class VideoPlayer
     this.videoElement.style.height = "100%"
     this.videoElement.style.width = "100%"
     this.videoElement.addEventListener("timeupdate", video_timeupdate);
+
+    var videoSource = document.createElement("source");
+    videoSource.type = "";
+    videoSource.src = "";
+    //add videoSouce to videoElement
+    this.videoElement.appendChild(videoSource);
+
     this.videoareaElement.appendChild(this.videoElement);
     useDefault = useDefault || false;
     this.setupControls(useDefault);
   }
 
-  /*
-   @param src video source path
-   @param type video type, such as "video/mp4"
-   */
-  setupSrc(src, type)
-  {
-    var videoSource = document.createElement("source");
-    videoSource.type = type;
-    videoSource.src = src;
-    //add videoSouce to videoElement
-    this.videoElement.appendChild(videoSource);
-  }
-
-  changeToSrc(src, type)
+  loadSrc(src, type)
   {
     var video = document.getElementsByTagName('video')[0];
     var sources = video.getElementsByTagName('source');
