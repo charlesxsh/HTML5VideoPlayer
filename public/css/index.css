@@ -1,0 +1,22 @@
+body {
+}
+
+section {
+	margin-top: 60px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 800px;
+	display: flex;
+}
+
+#playerarea {
+	display: inline;
+	width: 640px;
+	background-color: #F2F2F0;
+}
+
+#side{
+	display: inline;
+	width: 160px;
+	background-color: #F2F2F0;
+}
