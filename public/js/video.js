@@ -53,6 +53,33 @@ function video_timeupdate(event)
   seekBar.value = value;
 }
 
+function btnvolumnvontrol_mouseenter(event)
+{
+  var volbar = document.getElementById("video-control-panel-barvol");
+  volbar.style.width = "15%";
+  volbar.style.visibility = "visible";
+}
+
+function btnvolumnvontrol_click(event)
+{
+  var video = document.getElementsByTagName("video")[0];
+  if (video.muted)
+  {
+      video.muted = false
+  }
+  else
+  {
+      video.muted = true;
+  }
+}
+
+function barvol_mouseleave(event)
+{
+  var volbar = document.getElementById("video-control-panel-barvol");
+  volbar.style.width = "0";
+  volbar.style.visibility = "hidden";
+
+}
 class VideoPlayer
 {
   /*
@@ -99,35 +126,47 @@ class VideoPlayer
     else
     {
       var videoControlPanel = document.createElement("div");
-      videoControlPanel.id = "video-control-panel"
-
       var btnPlayPause = document.createElement("button");
+      var barSeek = document.createElement("input");
+      var barVol = document.createElement("input");
+      var btnVolumnControl = document.createElement("button");
+      var btnFullScreen = document.createElement("button");
+      //whole control panel
+      videoControlPanel.id = "video-control-panel"
+      //play&pause button
       btnPlayPause.id = "video-control-panel-btnplaypause"
       btnPlayPause.type = "button";
-      btnPlayPause.addEventListener("click", btn_playpause);
-
-      var barSeek = document.createElement("input");
+      //to seek video time bar
       barSeek.id = "video-control-panel-barseekbar";
       barSeek.type = "range"
       barSeek.value = 0;
-      //barSeek.addEventListener("change", barseek_seek);
+      //volume control bar
+      barVol.id = "video-control-panel-barvol";
+      barVol.type = "range";
+      barVol.min = "0";
+      barVol.max = "1";
+      barVol.step = "0.1";
+      barVol.value = "1";
+      //mute button
+      btnVolumnControl.id = "video-control-panel-btnvolumncontrol"
+      btnVolumnControl.innerHTML = "Vol"
+      //fullscreen button
+      btnFullScreen.id = "video-control-panel-btnfullscreen";
+      btnFullScreen.innerHTML = "Full"
+      //add event listener
+      btnPlayPause.addEventListener("click", btn_playpause);
       barSeek.addEventListener("mousedown", barseek_mousedown);
       barSeek.addEventListener("mouseup", barseek_mouseup);
       barSeek.addEventListener("input", barseek_input);
-
-      var btnVolumnControl = document.createElement("button");
-      btnVolumnControl.id = "video-control-panel-btnvolumncontrol"
-      btnVolumnControl.innerHTML = "Vol"
-
-      var btnFullScreen = document.createElement("button");
-      btnFullScreen.id = "video-control-panel-btnfullscreen";
-      btnFullScreen.innerHTML = "Full"
       btnFullScreen.addEventListener("click", btn_fullscreen);
-
+      btnVolumnControl.addEventListener("mouseenter", btnvolumnvontrol_mouseenter);
+      btnVolumnControl.addEventListener("click", btnvolumnvontrol_click);
+      barVol.addEventListener("mouseleave", barvol_mouseleave);
       //add those buttons and bars to panel
       videoControlPanel.appendChild(barSeek);
       videoControlPanel.appendChild(btnPlayPause);
       videoControlPanel.appendChild(btnVolumnControl);
+      videoControlPanel.appendChild(barVol);
       videoControlPanel.appendChild(btnFullScreen);
       //add panel to video area
       this.videoareaElement.appendChild(videoControlPanel);
