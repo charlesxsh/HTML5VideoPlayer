@@ -18,19 +18,7 @@
 	-o-transition: opacity .3s;
 	-ms-transition: opacity .3s;
 	transition: opacity .3s;
-	background-image: linear-gradient(bottom, rgb(3,113,168) 13%, rgb(0,136,204) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(3,113,168) 13%, rgb(0,136,204) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(3,113,168) 13%, rgb(0,136,204) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(3,113,168) 13%, rgb(0,136,204) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(3,113,168) 13%, rgb(0,136,204) 100%);
-
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.13, rgb(3,113,168)),
-		color-stop(1, rgb(0,136,204))
-	);
+  background: rgba(0, 0, 0, 0.5)
 }
 
 #playerarea:hover #video-control-panel {
@@ -38,19 +26,38 @@
 }
 
 button {
-	background: rgba(0,0,0,.5);
+	background: rgba(0,0,0,0);
 	border: 0;
 	color: #EEE;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	-o-border-radius: 3px;
-	border-radius: 3px;
 }
+
 
 button:hover {
 	cursor: pointer;
 }
 
-#video-control-panel-barseekbar {
-	width: 360px;
+#video-control-panel-btnplaypause
+{
+  background: url("../src/play.png")  no-repeat;
+  background-position: center;
+  background-size: 80% 80%;
+  height: 20px;
+  width: 20px;
+}
+
+#video-control-panel-btnplaypause:focus
+{
+  outline: none;
+}
+#video-control-panel-barseekbar
+{
+	width: 100%;
+}
+
+#video-control-panel-btnfullscreen
+{
+  float:right;
 }

@@ -6,12 +6,12 @@ function btn_playpause(event)
   if(video.paused == true)
   {
     video.play();
-    event.target.innerHTML = "Pause";
+    event.target.style.backgroundImage = "url('./src/suspend.png')";
   }
   else
   {
     video.pause();
-    event.target.innerHTML = "Play";
+    event.target.style.backgroundImage = "url('./src/play.png')";
   }
 }
 
@@ -26,12 +26,6 @@ function btn_fullscreen(event)
       video.webkitRequestFullscreen(); // Chrome and Safari
     }
 }
-
-// function barseek_seek(event)
-// {
-//     var video = document.getElementsByTagName("video")[0];
-//     video.currentTime = video.duration * (event.target.value / 100);
-// }
 
 function barseek_mousedown(event)
 {
@@ -110,7 +104,6 @@ class VideoPlayer
       var btnPlayPause = document.createElement("button");
       btnPlayPause.id = "video-control-panel-btnplaypause"
       btnPlayPause.type = "button";
-      btnPlayPause.innerHTML = "Play"
       btnPlayPause.addEventListener("click", btn_playpause);
 
       var barSeek = document.createElement("input");
@@ -132,8 +125,8 @@ class VideoPlayer
       btnFullScreen.addEventListener("click", btn_fullscreen);
 
       //add those buttons and bars to panel
-      videoControlPanel.appendChild(btnPlayPause);
       videoControlPanel.appendChild(barSeek);
+      videoControlPanel.appendChild(btnPlayPause);
       videoControlPanel.appendChild(btnVolumnControl);
       videoControlPanel.appendChild(btnFullScreen);
       //add panel to video area
