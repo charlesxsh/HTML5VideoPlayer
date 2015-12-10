@@ -18,13 +18,29 @@ function btn_playpause(event)
 function btn_fullscreen(event)
 {
     var video = document.getElementsByTagName("video")[0];
+    if (!document.fullscreenElement &&    // alternative standard method
+      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
     if (video.requestFullscreen) {
       video.requestFullscreen();
+    } else if (video.msRequestFullscreen) {
+      video.msRequestFullscreen();
     } else if (video.mozRequestFullScreen) {
-      video.mozRequestFullScreen(); // Firefox
+      video.mozRequestFullScreen();
     } else if (video.webkitRequestFullscreen) {
-      video.webkitRequestFullscreen(); // Chrome and Safari
+      video.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
     }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+
 }
 
 function barseek_mousedown(event)
@@ -63,23 +79,34 @@ function btnvolumnvontrol_mouseenter(event)
 function btnvolumnvontrol_click(event)
 {
   var video = document.getElementsByTagName("video")[0];
+  var volbar = document.getElementById("video-control-panel-barvol");
   if (video.muted)
   {
-      video.muted = false
+      video.muted = false;
+      volbar.value = "0.5";
+      event.target.style.backgroundImage = "url('./src/nomute.png')";
   }
   else
   {
       video.muted = true;
+      volbar.value = "0";
+      event.target.style.backgroundImage = "url('./src/mute.png')";
   }
 }
 
 function barvol_mouseleave(event)
 {
   var volbar = document.getElementById("video-control-panel-barvol");
-  volbar.style.width = "0";
+  volbar.style.width = "2.5%";
   volbar.style.visibility = "hidden";
-
 }
+
+function barvol_change(event)
+{
+  var video = document.getElementsByTagName("video")[0];
+  video.volume = event.target.value;
+}
+
 class VideoPlayer
 {
   /*
@@ -136,10 +163,12 @@ class VideoPlayer
       //play&pause button
       btnPlayPause.id = "video-control-panel-btnplaypause"
       btnPlayPause.type = "button";
+      btnPlayPause.className += "control-panel-button";
       //to seek video time bar
       barSeek.id = "video-control-panel-barseekbar";
       barSeek.type = "range"
       barSeek.value = 0;
+      barSeek.className += "video-control-panel-bar";
       //volume control bar
       barVol.id = "video-control-panel-barvol";
       barVol.type = "range";
@@ -147,12 +176,13 @@ class VideoPlayer
       barVol.max = "1";
       barVol.step = "0.1";
       barVol.value = "1";
+      barVol.className += "video-control-panel-bar";
       //mute button
-      btnVolumnControl.id = "video-control-panel-btnvolumncontrol"
-      btnVolumnControl.innerHTML = "Vol"
+      btnVolumnControl.id = "video-control-panel-btnvolumncontrol";
+      btnVolumnControl.className += "control-panel-button";
       //fullscreen button
       btnFullScreen.id = "video-control-panel-btnfullscreen";
-      btnFullScreen.innerHTML = "Full"
+      btnFullScreen.className += "control-panel-button";
       //add event listener
       btnPlayPause.addEventListener("click", btn_playpause);
       barSeek.addEventListener("mousedown", barseek_mousedown);
@@ -162,6 +192,7 @@ class VideoPlayer
       btnVolumnControl.addEventListener("mouseenter", btnvolumnvontrol_mouseenter);
       btnVolumnControl.addEventListener("click", btnvolumnvontrol_click);
       barVol.addEventListener("mouseleave", barvol_mouseleave);
+      barVol.addEventListener("change", barvol_change);
       //add those buttons and bars to panel
       videoControlPanel.appendChild(barSeek);
       videoControlPanel.appendChild(btnPlayPause);
