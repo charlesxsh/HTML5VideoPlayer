@@ -9,7 +9,8 @@ window.onload = function() {
             console.log(f.name);
             url = URL.createObjectURL(f);
         }
-        vp.loadSrc("video/big_buck_bunny.mp4", "video/mp4");
+        vp.loadSrc(url, "video/mp4");
+        //TODO revoke
     });
 
     $('#select_video').click(function(){
