@@ -204,3 +204,11 @@ class VideoPlayer
     }
   }
 }
+
+class VideoPlayerThreeD
+{
+  constructor()
+  {
+    
+  }
+}
