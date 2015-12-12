@@ -11,6 +11,7 @@ window.onload = function() {
         }
         vp.loadSrc(url, "video/mp4");
         //TODO revoke
+        URL.createObjectURL(url);
     });
 
     $('#select_video').click(function(){

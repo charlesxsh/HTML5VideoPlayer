@@ -8,9 +8,10 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "body-parser": "^1.14.1",
-    "express": "^4.9.8",
-    "mocha": "^2.3.3"
+    "body-parser": "1.14.1",
+    "express": "4.9.8",
+    "mocha": "2.3.3",
+    "socket.io": "1.3.7"
   },
   "author": "Shihao Xia, Yudi Wang, Xuanzhe Wang",
   "license": "MIT"
