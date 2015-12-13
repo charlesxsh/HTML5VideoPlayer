@@ -230,7 +230,7 @@ class VideoPlayer
   /*
   check a video whether or not is loaded.
   */
-  isloaded()
+  isLoaded()
   {
     if (this.videoElement.readyState === 4)
     {
@@ -243,6 +243,9 @@ class VideoPlayer
   }
 }
 
+/*
+  detect esc to quit 3d video player mode
+  */
 window.addEventListener("keyup", function(event){
   if(event.which == "27")
   {
