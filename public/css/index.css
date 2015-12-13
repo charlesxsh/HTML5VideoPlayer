@@ -10,10 +10,14 @@ section {
 	display: flex;
 }
 
-.width800 {
+.Width800 {
 	margin-right: auto;
 	margin-left: auto;
 	width: 800px;
+}
+
+.ZIndex0 {
+	z-index: 0;
 }
 
 #playerarea {
@@ -39,4 +43,8 @@ section {
 	margin-right: auto;
 	margin-left: auto;
 	width: 800px;
+}
+
+#bullet_submit button {
+	z-index: 0;
 }

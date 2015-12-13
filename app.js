@@ -52,11 +52,11 @@ io.on('connection', function(socket){
   	console.log('user disconnected');
   });
 
-  //this msg should be a json string
+  //this msg should be an object
   //{comment: value, time: value}
   socket.on(EVENT.BULLET, function(msg) {
-  	var json = JSON.parse(msg);
-  	console.log('bullet: ' + json);
+  	//var json = JSON.parse(msg);
+  	console.log('bullet: ' + JSON.stringify(msg));
   	io.emit(EVENT.BULLET, msg);
   });
 
