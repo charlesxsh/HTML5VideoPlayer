@@ -1,7 +1,8 @@
+
 var container = document.getElementById("threedvideocontainer");
 var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 var scene = new THREE.Scene();
-var video = document.getElementsByTagName("video")[0];
+var video;
 var image = document.createElement("canvas");
 
 var stats, renderer;
@@ -16,11 +17,11 @@ var mousePositionY = 0;
 var windowWidth = window.innerWidth *(2/3);
 var windowHeight = window.innerHeight * (2/3);
 
-init();
-animate();
+
 
 function init()
 {
+  video = document.getElementsByTagName("video")[0];
   camera.position.z = 1000;
   image.width = 640;
   image.height = 480;
@@ -93,7 +94,7 @@ function init()
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	container.appendChild( renderer.domElement );
 
-	stats = new THREE.Stats();
+	stats = new Stats();
 	stats.domElement.style.position = 'absolute';
 	stats.domElement.style.top = '0px';
 	container.appendChild( stats.domElement );
@@ -136,7 +137,6 @@ function onWindowResize() {
 		camera.position.x += ( mousePositionX - camera.position.x ) * 0.05;
 		camera.position.y += ( - mousePositionY - camera.position.y ) * 0.05;
 		camera.lookAt( scene.position );
-
 		if ( video.readyState === video.HAVE_ENOUGH_DATA ) {
 
 			imageContext.drawImage( video, 0, 0 );
