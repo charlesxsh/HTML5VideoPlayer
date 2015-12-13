@@ -9,7 +9,6 @@ var bodyParser = require('body-parser');
 var socketio = require('socket.io');
 var ss = require('socket.io-stream');
 
-
 //set up
 var app = express();
 var httpServer = http.Server(app);
@@ -18,6 +17,11 @@ var io = socketio(httpServer);
 
 //init
 var port = process.env.PORT || 3000;
+const EVENT = {
+  BULLET: 'bullet',
+  VIDEO_UPLOAD: 'video upload',
+  VIDEO_DOWNLOAD: 'video download',
+}
 
 
 //middle ware
@@ -27,9 +31,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 //routing
-app.get('/test', function(req, res) {
-	console.log('/test');
-	res.sendFile(path.join(__dirname, '/public/test.html'));
+app.get('/video', function(req, res) {
+  //get video from server
+});
+
+app.get('/video-list', function(req, res) {
+  //get video from server
+  var videoList = fs.readdirSync('public/video/');
+  console.log(videoList);
+  res.end(JSON.stringify(videoList));
 });
 
 
@@ -42,21 +52,20 @@ io.on('connection', function(socket){
   	console.log('user disconnected');
   });
 
-  socket.on('chat message', function(msg) {
-  	console.log('message: ' + msg);
-  	io.emit('chat message', msg);
-  });
-
   //this msg should be a json string
   //{comment: value, time: value}
-  socket.on('bullet', function(msg) {
+  socket.on(EVENT.BULLET, function(msg) {
   	var json = JSON.parse(msg);
   	console.log('bullet: ' + json);
-  	io.emit('bullet', msg);
+  	io.emit(EVENT.BULLET, msg);
   });
 
-  ss(socket).on('video', function(stream, data) {
+  ss(socket).on(EVENT.VIDEO_UPLOAD, function(stream, data) {
     console.log('video: ' + data.name);
+
+    // stream.on('data', function(chunk) {
+    //   console.log('got %d bytes of data', chunk.length);
+    // });
     stream.pipe(fs.createWriteStream("public/video/" + data.name));
   });
 });

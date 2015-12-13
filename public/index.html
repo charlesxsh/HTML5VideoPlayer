@@ -17,7 +17,8 @@
         <script src="metro/js/metro.js"></script>
         <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
         <script src="js/socket.io-stream.js"></script>
-        <script src="js/socket.js"></script>
+        <script src="js/globle-const.js"></script>
+        <script src="js/socketmanager.js"></script>
         <script src="js/video.js"></script>
         <script src="js/index.js"></script>
         <title>HPlayer</title>
@@ -27,17 +28,17 @@
         <section>
             <div id="playerarea"></div>
             <div id="side">
-                <ul id="side_bar" class="sidebar2">
+                <ul class="sidebar2">
                     <li>
                         <a id="select_video">
                             <span class="mif-file-video icon"></span>
                             Select Video
                         </a>
                     </li>
-                    <li id="creat_stream">
+                    <li id="upload_video">
                         <a>
-                            <span class="mif-share icon"></span>
-                            Creat Stream
+                            <span class="mif-cloud-upload icon"></span>
+                            Upload Video
                         </a>
                     </li>
                     <li id="view_history">
@@ -47,8 +48,12 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div>     
         </section>
+        <div id="videos_from_server">
+            <ul id="video_list" class="sidebar darcula">
+            </ul>
+        </div>
 
         <input id="input_select_video" type="file" hidden>
     </body>

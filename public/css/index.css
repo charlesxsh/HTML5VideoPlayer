@@ -1,4 +1,5 @@
 body {
+
 }
 
 section {
@@ -19,4 +20,11 @@ section {
 	display: inline;
 	width: 160px;
 	background-color: #F2F2F0;
+}
+
+#videos_from_server {
+	margin-top: 30px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 800px;
 }
