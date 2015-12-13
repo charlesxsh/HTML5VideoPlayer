@@ -8,6 +8,10 @@ window.onload = function() {
   var vp = new VideoPlayer(document.getElementById('playerarea'));
   loadVideoList(vp);
   registerListeners(socket, vp);
+
+  socket.onBullet(function(msg) {
+    console.log(JSON.stringify(msg));
+  });
 }
 
 function loadVideoList(vp) {
