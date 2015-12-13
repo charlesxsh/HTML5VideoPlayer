@@ -48,7 +48,7 @@ io.on('connection', function(socket){
   });
 
   //this msg should be a json string
-  //{comment: value, time: time}
+  //{comment: value, time: value}
   socket.on('bullet', function(msg) {
   	var json = JSON.parse(msg);
   	console.log('bullet: ' + json);

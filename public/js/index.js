@@ -3,7 +3,7 @@ var f; //video file
 
 window.onload = function() {
 
-    var socket = io();
+    var socket = new Socket();
     var vp = new VideoPlayer(document.getElementById('playerarea'));
 
     document.getElementById('input_select_video').addEventListener('change', function(event) {
@@ -24,19 +24,7 @@ window.onload = function() {
         console.log(f);
         if(f) {
             console.log("try to stream " + f.name);
-            var stream = ss.createStream();
-            // upload a file to the server. 
-            ss(socket).emit('video', stream, {size: f.size, name: f.name});
-            var blobStream = ss.createBlobReadStream(f);
-
-            //track progress
-            var size = 0;
-            blobStream.on('data', function(chunk) {
-                size += chunk.length;
-                console.log(Math.floor(size / f.size * 100) + '%');
-            });
-
-            blobStream.pipe(stream);
+            socket.emitVideoStream(f);
         }
     });
 }
