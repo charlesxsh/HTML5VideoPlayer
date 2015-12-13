@@ -1,5 +1,5 @@
 "use strict"
-
+var is3d = false;
 function btn_playpause(event)
 {
   var video = document.getElementsByTagName("video")[0];
@@ -113,6 +113,8 @@ function btnthree_click(event)
   container.style.display = "block";
   container.style.width = window.innerWidth + "px";
   container.style.height = window.innerHeight + "px";
+  is3d = true;
+  animate();
   document.getElementById("playerarea").style.display = "none";
 }
 class VideoPlayer
@@ -252,5 +254,6 @@ window.addEventListener("keyup", function(event){
     var container = document.getElementById("threedvideocontainer");
     container.style.display = "none";
     document.getElementById("playerarea").style.display = "block";
+    is3d = false;
   }
 });

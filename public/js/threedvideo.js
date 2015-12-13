@@ -14,9 +14,8 @@ var mesh;
 var mousePositionX = 0;
 var mousePositionY = 0;
 
-var windowWidth = window.innerWidth *(2/3);
-var windowHeight = window.innerHeight * (2/3);
-
+var windowWidth = window.innerWidth *(1/2);
+var windowHeight = window.innerHeight * (1/2);
 
 
 function init()
@@ -104,8 +103,8 @@ function init()
 }
 function onWindowResize() {
 
-		windowHalfX = window.innerWidth / 2;
-		windowHalfY = window.innerHeight / 2;
+		windowWidth = window.innerWidth / 2;
+		windowHeight = window.innerHeight / 2;
 
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
@@ -124,12 +123,12 @@ function onWindowResize() {
 	//
 
 	function animate() {
-
-		requestAnimationFrame( animate );
-
-		render();
-		stats.update();
-
+    if(is3d){
+      console.log("animating");
+  		requestAnimationFrame( animate );
+  		render();
+  		stats.update();
+    }
 	}
 
 	function render() {
