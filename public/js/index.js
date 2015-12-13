@@ -6,7 +6,6 @@ window.onload = function() {
 
   var socket = new SocketManager();
   var vp = new VideoPlayer(document.getElementById('playerarea'));
-
   loadVideoList(vp);
   registerListeners(socket, vp);
 }

@@ -107,6 +107,14 @@ function barvol_change(event)
   video.volume = event.target.value;
 }
 
+function btnthree_click(event)
+{
+  var container = document.getElementById("threedvideocontainer");
+  container.style.display = "block";
+  container.style.width = window.innerWidth + "px";
+  container.style.height = window.innerHeight + "px";
+  document.getElementById("playerarea").style.display = "none";
+}
 class VideoPlayer
 {
   /*
@@ -158,6 +166,7 @@ class VideoPlayer
       var barVol = document.createElement("input");
       var btnVolumnControl = document.createElement("button");
       var btnFullScreen = document.createElement("button");
+      var btnThreeDMode = document.createElement("button");
       //whole control panel
       videoControlPanel.id = "video-control-panel"
       //play&pause button
@@ -183,6 +192,10 @@ class VideoPlayer
       //fullscreen button
       btnFullScreen.id = "video-control-panel-btnfullscreen";
       btnFullScreen.className += "control-panel-button";
+      //3d mode button
+      btnThreeDMode.className += "control-panel-button";
+      btnThreeDMode.id = "video-control-panel-btnthreedmode";
+      btnThreeDMode.innerHTML = "3D"
       //add event listener
       btnPlayPause.addEventListener("click", btn_playpause);
       barSeek.addEventListener("mousedown", barseek_mousedown);
@@ -193,203 +206,51 @@ class VideoPlayer
       btnVolumnControl.addEventListener("click", btnvolumnvontrol_click);
       barVol.addEventListener("mouseleave", barvol_mouseleave);
       barVol.addEventListener("change", barvol_change);
+      btnThreeDMode.addEventListener("click", btnthree_click);
       //add those buttons and bars to panel
       videoControlPanel.appendChild(barSeek);
       videoControlPanel.appendChild(btnPlayPause);
       videoControlPanel.appendChild(btnVolumnControl);
       videoControlPanel.appendChild(barVol);
       videoControlPanel.appendChild(btnFullScreen);
+      videoControlPanel.appendChild(btnThreeDMode);
       //add panel to video area
       this.videoareaElement.appendChild(videoControlPanel);
     }
   }
-}
 
-class VideoPlayerThreeD
-{
   /*
-    @param numberOfcubeOnx The number of cubes appear on x
-    @param numberOfcubeOny The number of cubes appear on y
-   */
-  constructor(numberOfcubeOnx, numberOfcubeOny)
-  {
-    if (! Detector.webgl ) Detector.addGetWebGLMessage();
-    this.mousePositionX = 0;
-    this.mousePositionY = 0;
-    this.windowSizeX = window.innerWidth / 2;
-    this.windowSizeY = window.innerHeight / 2;
-    this.cubeCount = 0;
-    this.meshes = [];
-    this.materials = [];
-    this.numberOfcubeOnx = 20;
-    this.numberOfcubeOny = 10;
-    this.temp = 1;
-  this.counter = 1;
-  }
-
-  onWindowResize() 
-  {
-    this.windowSizeX = window.innerWidth / 2;
-    this.windowSizeY = window.innerHeight / 2;
-
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-
-    this.renderer.setSize( window.innerWidth, window.innerHeight );
-    this.composer.reset();
-  }
-
-  change_uvs( geometry, unitx, unity, offsetx, offsety ) 
-  {
-    var faceVertexUvs = geometry.faceVertexUvs[ 0 ];
-    for ( var i = 0; i < faceVertexUvs.length; i ++ ) 
-    {
-      var uvs = faceVertexUvs[ i ];
-      for ( var j = 0; j < uvs.length; j ++ ) 
-      {
-        var uv = uvs[ j ];
-        uv.x = ( uv.x + offsetx ) * unitx;
-        uv.y = ( uv.y + offsety ) * unity;
-      }
-    }
-  }
-
-  onDocumentMouseMove(event) {
-    this.mousePositionX = ( event.clientX - this.windowSizeX );
-    this.mousePositionY = ( event.clientY - this.windowSizeY ) * 0.3;
-  }
-  /*
-   @param containerNode The div element that holds 3d video player
+    get the current video time
   */
-  init(containerNode)
+  getCurrentVideoTime()
   {
-    this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
-    this.camera.position.z = 500;
-    this.scene = new THREE.Scene();
-    //set up light
-    var light = new THREE.DirectionalLight( 0xffffff );
-    light.position.set( 0.5, 1, 1 ).normalize();
-    this.scene.add( light );
-    //set up renderer
-    this.renderer = new THREE.WebGLRenderer( { antialias: false } );
-    this.renderer.setPixelRatio( window.devicePixelRatio );
-    this.renderer.setSize( window.innerWidth, window.innerHeight );
-    containerNode.appendChild( this.renderer.domElement );
-    //get video element
-    var video = document.getElementsByTagName("video")[0];
-    //set up texture
-    this.texture = new THREE.VideoTexture( video );
-    this.texture.minFilter = THREE.LinearFilter;
-    this.texture.magFilter = THREE.LinearFilter;
-    this.texture.format = THREE.RGBFormat;
-    var i, j, ux, uy, ox, oy, geometry, xsize, ysize;
-    ux = 1 / this.numberOfcubeOnx;
-    uy = 1 / this.numberOfcubeOny;
-    xsize = 480 / this.numberOfcubeOnx;
-    ysize = 204 / this.numberOfcubeOny;
-    var parameters = {color: 0xffffff, map: this.texture};
-
-    for ( i = 0; i < this.numberOfcubeOnx; i ++ )
-    {
-      for ( j = 0; j < this.numberOfcubeOny; j ++ ) 
-      {
-        ox = i;
-        oy = j;
-        this.geometry = new THREE.BoxGeometry( xsize, ysize, xsize );
-        this.change_uvs( this.geometry, ux, uy, ox, oy );
-        this.materials[ this.cubeCount ] = new THREE.MeshLambertMaterial( parameters );
-        this.material = this.materials[ this.cubeCount ];
-        this.material.hue = i/this.numberOfcubeOnx;
-        this.material.saturation = 1 - j/this.numberOfcubeOny;
-        this.material.color.setHSL( this.material.hue, this.material.saturation, 0.5 );
-        this.mesh = new THREE.Mesh( this.geometry, this.material );
-        this.mesh.position.x =   ( i - this.numberOfcubeOnx/2 ) * xsize;
-        this.mesh.position.y =   ( j - this.numberOfcubeOny/2 ) * ysize;
-        this.mesh.position.z = 0;
-        this.mesh.scale.x = this.mesh.scale.y = this.mesh.scale.z = 1;
-        this.scene.add( this.mesh );
-        this.mesh.dx = 0.001 * (0.5 - Math.random());
-        this.mesh.dy = 0.001 * (0.5 - Math.random());
-        this.meshes[ this.cubeCount ] = this.mesh;
-        this.cubeCount += 1;
-      }
-    }
-    this.renderer.autoClear = false;
-    document.addEventListener( 'mousemove', this, false );
-    // postprocessing
-    var renderModel = new THREE.RenderPass( this.scene, this.camera );
-    var effectBloom = new THREE.BloomPass( 1.3 );
-    var effectCopy = new THREE.ShaderPass( THREE.CopyShader );
-    effectCopy.renderToScreen = true;
-    this.composer = new THREE.EffectComposer( this.renderer );
-    this.composer.addPass( renderModel );
-    this.composer.addPass( effectBloom );
-    this.composer.addPass( effectCopy );
-    window.addEventListener( 'resize', this, false );
+    return this.videoElement.currentTime;
   }
 
-
-  render() 
+  /*
+  check a video whether or not is loaded.
+  */
+  isLoaded()
   {
-    var time = Date.now() * 0.00005;
-    this.camera.position.x += ( this.mousePositionX - this.camera.position.x ) * 0.05;
-    this.camera.position.y += ( - this.mousePositionY - this.camera.position.y ) * 0.05;
-    this.camera.lookAt( this.scene.position );
-    for ( i = 0; i < this.cubeCount; i ++ ) 
+    if (this.videoElement.readyState === 4)
     {
-      this.material = this.materials[ i ];
-      this.h = ( 360 * ( this.material.hue + time ) % 360 ) / 360;
-      this.material.color.setHSL( this.h, this.material.saturation, 0.5 );
+        return true;
     }
-
-    if ( this.counter % 100 > 50 ) 
+    else
     {
-      for ( var i = 0; i < this.cubeCount; i ++ ) 
-      {
-        this.mesh = this.meshes[ i ];
-        this.mesh.rotation.x += 10 * this.mesh.dx;
-        this.mesh.rotation.y += 10 * this.mesh.dy;
-        this.mesh.position.x += 200 * this.mesh.dx;
-        this.mesh.position.y += 200 * this.mesh.dy;
-        this.mesh.position.z += 400 * this.mesh.dx;
-      }
+        return false;
     }
-
-    if ( this.counter % 100 === 0 ) 
-    {
-      for ( i = 0; i < this.cubeCount; i ++ )
-      {
-        this.mesh = this.meshes[ i ];
-        this.mesh.dx *= -1;
-        this.mesh.dy *= -1;
-      }
-    }
-    this.counter ++;
-    this.renderer.clear();
-    this.composer.render();
   }
-
-
 }
-VideoPlayerThreeD.prototype.handleEvent = function(event) {
-  switch(event.type)
+
+/*
+  detect esc to quit 3d video player mode
+  */
+window.addEventListener("keyup", function(event){
+  if(event.which == "27")
   {
-    case 'resize':
-      this.onWindowResize();
-      break;
-    case 'mousemove':
-      this.onDocumentMouseMove(event);
-      break;
+    var container = document.getElementById("threedvideocontainer");
+    container.style.display = "none";
+    document.getElementById("playerarea").style.display = "block";
   }
-};
-
-    // var vd = new VideoPlayerThreeD(20,10);
-    // vd.init(document.getElementById('video3d'));
-
-    // function animate()
-    // {
-    //   window.requestAnimationFrame(animate);
-    //   vd.render();
-    // }
-    // animate();
-
+});
