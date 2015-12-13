@@ -1,10 +1,13 @@
 //require modules
 var express = require('express');
 var http = require('http');
-var socketio = require('socket.io');
+
 var path = require('path');
 var fs = require('fs');
 var bodyParser = require('body-parser');
+
+var socketio = require('socket.io');
+var ss = require('socket.io-stream');
 
 
 //set up
@@ -50,6 +53,11 @@ io.on('connection', function(socket){
   	var json = JSON.parse(msg);
   	console.log('bullet: ' + json);
   	io.emit('bullet', msg);
+  });
+
+  ss(socket).on('video', function(stream, data) {
+    console.log('video: ' + data.name);
+    stream.pipe(fs.createWriteStream("public/video/" + data.name));
   });
 });
 
