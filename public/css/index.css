@@ -10,6 +10,12 @@ section {
 	display: flex;
 }
 
+.width800 {
+	margin-right: auto;
+	margin-left: auto;
+	width: 800px;
+}
+
 #playerarea {
 	display: inline;
 	width: 640px;
@@ -24,6 +30,12 @@ section {
 
 #videos_from_server {
 	margin-top: 30px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 800px;
+}
+
+#bullet_submit {
 	margin-right: auto;
 	margin-left: auto;
 	width: 800px;

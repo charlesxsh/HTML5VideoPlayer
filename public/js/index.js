@@ -1,5 +1,6 @@
 var url;
 var f; //video file
+var isPlayingCloudVideo = false;
 
 window.onload = function() {
 
@@ -31,6 +32,7 @@ function loadVideoList(vp) {
 		    var videoName = $(this).text();;
 		    f = undefined;
 		    vp.loadSrc("video/" + videoName, "video/mp4");
+        isPlayingCloudVideo = true;
 		  });
     },
   });
@@ -56,6 +58,22 @@ function registerListeners(socket, vp) {
     if(f) {
       console.log("try to stream " + f.name);
       socket.emitVideoStream(f);
+    }
+  });
+
+  $('#bullet_submit button').click(function() {
+    var input = $('#bullet_submit input');
+    var inputValue = input.val();
+    console.log(inputValue);
+    input.val('');
+    if(vp.isLoaded() && isPlayingCloudVideo) {
+      var bullet = {
+        comment: inputValue,
+        time: vp.getCurrentVideoTime()
+      };
+      socket.emitBullet(bullet);
+    } else {
+      console.log("no cloud video is loaded");
     }
   });
 }

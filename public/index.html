@@ -6,55 +6,62 @@
             Shihao Xia
     -->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="metro/css/metro.css">
-        <link rel="stylesheet" type="text/css" href="metro/css/metro-icons.css">
-        <link rel="stylesheet" type="text/css" href="metro/css/metro-schemes.css">
-        <link rel="stylesheet" type="text/css" href="css/video.css">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <script src="js/jquery-2.1.4.js"></script>
-        <script src="metro/js/metro.js"></script>
-        <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
-        <script src="js/socket.io-stream.js"></script>
-        <script src="js/globle-const.js"></script>
-        <script src="js/socketmanager.js"></script>
-        <script src="js/video.js"></script>
-        <script src="js/index.js"></script>
-        <title>HPlayer</title>
-    </head>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="metro/css/metro.css">
+    <link rel="stylesheet" type="text/css" href="metro/css/metro-icons.css">
+    <link rel="stylesheet" type="text/css" href="metro/css/metro-schemes.css">
+    <link rel="stylesheet" type="text/css" href="css/video.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="js/jquery-2.1.4.js"></script>
+    <script src="metro/js/metro.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+    <script src="js/socket.io-stream.js"></script>
+    <script src="js/globle-const.js"></script>
+    <script src="js/socketmanager.js"></script>
+    <script src="js/video.js"></script>
+    <script src="js/index.js"></script>
+    <title>HPlayer</title>
+  </head>
 
-    <body>
-        <section>
-            <div id="playerarea"></div>
-            <div id="side">
-                <ul class="sidebar2">
-                    <li>
-                        <a id="select_video">
-                            <span class="mif-file-video icon"></span>
-                            Select Video
-                        </a>
-                    </li>
-                    <li id="upload_video">
-                        <a>
-                            <span class="mif-cloud-upload icon"></span>
-                            Upload Video
-                        </a>
-                    </li>
-                    <li id="view_history">
-                        <a>
-                            <span class="mif-history icon"></span>
-                            View History
-                        </a>
-                    </li>
-                </ul>
-            </div>     
-        </section>
-        <div id="videos_from_server">
-            <ul id="video_list" class="sidebar darcula">
-            </ul>
-        </div>
+  <body>
+    <section>
+      <div id="playerarea"></div>
+      <div id="side">
+        <ul class="sidebar2">
+          <li>
+            <a id="select_video">
+              <span class="mif-file-video icon"></span>
+              Select Video
+            </a>
+          </li>
+          <li id="upload_video">
+            <a>
+              <span class="mif-cloud-upload icon"></span>
+              Upload Video
+            </a>
+          </li>
+          <li id="view_history">
+            <a>
+              <span class="mif-history icon"></span>
+              View History
+            </a>
+          </li>
+        </ul>
+      </div>     
+    </section>
 
-        <input id="input_select_video" type="file" hidden>
-    </body>
+    <div class="width800">
+      <div id="bullet_submit" class="input-control text" data-role="input">
+        <input type="text"><button class="button"><span class="mif-paper-plane"></span></button>
+      </div>
+    </div>
+    
+    <div id="videos_from_server">
+      <ul id="video_list" class="sidebar darcula">
+      </ul>
+    </div>
+
+    <input id="input_select_video" type="file" hidden>
+  </body>
 </html>
