@@ -2,6 +2,7 @@ var url;
 var f; //video file
 var isPlayingCloudVideo = false;
 var videoList;
+var currentVideoFileName;
 
 window.onload = function() {
 
@@ -37,6 +38,7 @@ function loadVideoList(vp) {
 		    f = undefined;
 		    vp.loadSrc("video/" + videoFileName, "video/mp4");
         isPlayingCloudVideo = true;
+        currentVideoFileName = videoFileName;
 		  });
     }
   });
@@ -73,7 +75,8 @@ function registerListeners(socket, vp) {
     if(vp.isLoaded() && isPlayingCloudVideo) {
       var bullet = {
         comment: inputValue,
-        time: vp.getCurrentVideoTime()
+        time: vp.getCurrentVideoTime(),
+        videoFileName: currentVideoFileName
       };
       console.log("emit bullet: " + inputValue);
       socket.emitBullet(bullet);

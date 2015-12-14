@@ -76,6 +76,10 @@ io.on('connection', function(socket){
   socket.on(EVENT.BULLET, function(msg) {
   	//var json = JSON.parse(msg);
   	console.log('bullet: ' + JSON.stringify(msg));
+    bulletDB.db.run("INSERT INTO "+ msg.videoFileName +" VALUES ($comment, $time)", {
+      $comment: msg.comment,
+      $time: msg.time}
+    );
   	io.emit(EVENT.BULLET, msg);
   });
 
