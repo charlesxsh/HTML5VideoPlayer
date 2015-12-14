@@ -17,7 +17,7 @@ function handleBullet(socket){
 	    "font-weight": "bold",
 	    "position": "relative",
 	    "animation": "mymove 5s"
-	})
+	});
 
 
     setTimeout(function() {

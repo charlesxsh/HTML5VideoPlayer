@@ -9,10 +9,13 @@ var bodyParser = require('body-parser');
 var socketio = require('socket.io');
 var ss = require('socket.io-stream');
 
+var BulletDatabase = require('./database');
+
 //set up
 var app = express();
 var httpServer = http.Server(app);
 var io = socketio(httpServer);
+var bulletDB = new BulletDatabase();
 
 
 //init

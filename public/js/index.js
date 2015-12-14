@@ -10,9 +10,7 @@ window.onload = function() {
   loadVideoList(vp);
   registerListeners(socket, vp);
 
-  socket.onBullet(function(msg) {
-    console.log(JSON.stringify(msg));
-  });
+  handleBullet(socket);
 }
 
 function loadVideoList(vp) {
@@ -38,7 +36,7 @@ function loadVideoList(vp) {
 		    vp.loadSrc("video/" + videoName, "video/mp4");
         isPlayingCloudVideo = true;
 		  });
-    },
+    }
   });
 }
 
