@@ -39,6 +39,7 @@ function loadVideoList(vp) {
 		    vp.loadSrc("video/" + videoFileName, "video/mp4");
         isPlayingCloudVideo = true;
         currentVideoFileName = videoFileName;
+        //TODO get all bullets
 		  });
     }
   });
