@@ -44,3 +44,23 @@ section {
 #bullet_submit button {
 	z-index: 0;
 }
+
+.bulletdiv {
+	color: white;
+    width: 100px;
+    height: 50px;
+    font-weight: bold;
+    position: absolute;
+    top: 5px;
+    z-index:5;
+    animation: mymove 6s;
+    animation-timing-function: linear;
+
+}
+
+
+@keyframes mymove {
+    from {left: 800px;}
+    to {left: 0px;}
+}
+
