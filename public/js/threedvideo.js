@@ -22,16 +22,16 @@ function init()
 {
   video = document.getElementsByTagName("video")[0];
   camera.position.z = 1000;
-  image.width = 640;
-  image.height = 480;
+  image.width = 480;
+  image.height = 204;
   imageContext = image.getContext("2d");
   imageContext.fillStyle = '#000000';
   imageContext.fillRect( 0, 0, 480, 204 );
   texture = new THREE.Texture( image );
   var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
   imageReflection = document.createElement( 'canvas' );
-	imageReflection.width = 640;
-	imageReflection.height = 480;
+	imageReflection.width = 480;
+	imageReflection.height =204;
 
   imageReflectionContext = imageReflection.getContext( '2d' );
   imageReflectionContext.fillStyle = '#000000';
@@ -47,7 +47,7 @@ function init()
 
 	//
 
-	var plane = new THREE.PlaneGeometry( 480, 204, 4, 4 );
+	var plane = new THREE.PlaneGeometry( 480,204, 4, 4 );
 
 	mesh = new THREE.Mesh( plane, material );
 	mesh.scale.x = mesh.scale.y = mesh.scale.z = 1.5;
