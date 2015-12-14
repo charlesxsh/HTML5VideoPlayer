@@ -1,11 +1,11 @@
 
 var container = document.getElementById("threedvideocontainer");
-var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+var camera = new THREE.PerspectiveCamera( 28, window.innerWidth / window.innerHeight, 1, 10000 );
 var scene = new THREE.Scene();
 var video;
 var image = document.createElement("canvas");
 
-var stats, renderer;
+var renderer;
 var imageContext, imageReflection, imageReflectionContext, imageReflectionGradient,
 		texture, textureReflection;
 
@@ -16,7 +16,6 @@ var mousePositionY = 0;
 
 var windowWidth = window.innerWidth *(1/2);
 var windowHeight = window.innerHeight * (1/2);
-
 
 function init()
 {
@@ -42,13 +41,10 @@ function init()
   imageReflectionGradient.addColorStop( 1, 'rgba(240, 240, 240, 0.8)' );
 
   textureReflection = new THREE.Texture( imageReflection );
-
+	//material for the reflect screen
 	var materialReflection = new THREE.MeshBasicMaterial( { map: textureReflection, side: THREE.BackSide, overdraw: 0.5 } );
-
-	//
-
-	var plane = new THREE.PlaneGeometry( 480,204, 4, 4 );
-
+	//plan size of the 3d screen
+	var plane = new THREE.PlaneGeometry( 480,204, 8, 8 );
 	mesh = new THREE.Mesh( plane, material );
 	mesh.scale.x = mesh.scale.y = mesh.scale.z = 1.5;
 	scene.add(mesh);
@@ -58,45 +54,12 @@ function init()
 	mesh.rotation.x = - Math.PI;
 	mesh.scale.x = mesh.scale.y = mesh.scale.z = 1.5;
 	scene.add( mesh );
-  var separation = 150;
-	var amountx = 10;
-	var amounty = 10;
-
-	var PI2 = Math.PI * 2;
-	var material = new THREE.SpriteCanvasMaterial( {
-
-		color: 0x0808080,
-		program: function ( context ) {
-
-			context.beginPath();
-			context.arc( 0, 0, 0.5, 0, PI2, true );
-			context.fill();
-
-		}
-
-	} );
-
-	for ( var ix = 0; ix < amountx; ix++ ) {
-		for ( var iy = 0; iy < amounty; iy++ ) {
-			particle = new THREE.Sprite( material );
-			particle.position.x = ix * separation - ( ( amountx * separation ) / 2 );
-			particle.position.y = -153;
-			particle.position.z = iy * separation - ( ( amounty * separation ) / 2 );
-			particle.scale.x = particle.scale.y = 2;
-			scene.add( particle );
-		}
-	}
 
 	renderer = new THREE.CanvasRenderer();
 	renderer.setClearColor( 0xf0f0f0 );
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	container.appendChild( renderer.domElement );
-
-	stats = new Stats();
-	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.top = '0px';
-	container.appendChild( stats.domElement );
 
 	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	window.addEventListener( 'resize', onWindowResize, false );
@@ -127,7 +90,6 @@ function onWindowResize() {
       console.log("animating");
   		requestAnimationFrame( animate );
   		render();
-  		stats.update();
     }
 	}
 
