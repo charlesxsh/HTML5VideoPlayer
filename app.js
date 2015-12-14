@@ -19,6 +19,8 @@ var bulletDB = new BulletDatabase();
 
 
 //init
+bulletDB.init();
+
 var port = process.env.PORT || 3000;
 const EVENT = {
   BULLET: 'bullet',
@@ -41,8 +43,22 @@ app.get('/video', function(req, res) {
 app.get('/video-list', function(req, res) {
   //get video from server
   var videoList = fs.readdirSync('public/video/');
-  console.log(videoList);
-  res.end(JSON.stringify(videoList));
+  console.log("videoList: "+videoList);
+
+  if(videoList.length > 0) {
+    bulletDB.db.all("SELECT rowid AS id, fileName, title FROM files", function(err, rows) {
+      if (err) throw err;
+      if(rows.length > 0) {
+        console.log(rows);
+        var videoEntries = [];
+        for(var i = 0; i < rows.length; i++) {
+          videoEntries.push({fileName: rows[i].fileName, title: rows[i].title});
+          console.log(rows[i]);
+        }
+        res.end(JSON.stringify(videoEntries));
+      }
+    });
+  }
 });
 
 
@@ -69,7 +85,15 @@ io.on('connection', function(socket){
     // stream.on('data', function(chunk) {
     //   console.log('got %d bytes of data', chunk.length);
     // });
-    stream.pipe(fs.createWriteStream("public/video/" + data.name));
+    var fileName = "video"+Date.now().toString();
+    stream.pipe(fs.createWriteStream("public/video/" + fileName));
+    bulletDB.db.run("INSERT INTO files VALUES ('"+ fileName +"','"+ data.name +"')");
+    bulletDB.db.run(
+      "CREATE TABLE IF NOT EXISTS "+fileName+" ("+
+        "comment TEXT, " +
+        "time INT" +
+      ")"
+    );
   });
 });
 
@@ -77,4 +101,13 @@ io.on('connection', function(socket){
 //start server
 httpServer.listen(port, function() {
 	console.log('listening on port: ' + port);
+});
+
+process.on('SIGINT', function() {
+  bulletDB.db.close();
+  process.exit();
+});
+
+process.on('exit', function (){
+  console.log('Goodbye!');
 });

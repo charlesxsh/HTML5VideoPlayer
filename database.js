@@ -10,17 +10,14 @@ class BulletDatabase {
     this.db = new (require('sqlite3').verbose()).Database(databaseFile);
   }
 
-  createTable(tableName) {
+  init() {
     this.db.run(
-      "CREATE TABLE"+tableName+"(" +
-        "comment TEXT," +
-        "time INT," +
-        "file TEXT" +
-      ")"
+      'CREATE TABLE IF NOT EXISTS files (' +
+        'fileName TEXT PRIMARY KEY, ' +
+        'title TEXT' +
+      ')'
     );
   }
-
-
 }
 
 //   var statement = db.prepare("INSERT INTO bullet VALUES (?, ?)");

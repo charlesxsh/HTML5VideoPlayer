@@ -1,6 +1,7 @@
 var url;
 var f; //video file
 var isPlayingCloudVideo = false;
+var videoList;
 
 window.onload = function() {
 
@@ -17,13 +18,13 @@ function loadVideoList(vp) {
   $.ajax({
     url: "video-list",
     success: function(data) {
-    	var videoList = JSON.parse(data);
+    	videoList = JSON.parse(data);
     	videoList.forEach(function(element) {
     		$("#video_list").append(
 					"<li class='VideoName'>" +
             "<a>" +
               "<span class='mif-film icon'></span>" +
-              element +
+              element.title +
             "</a>" +
           "</li>"
         );
@@ -31,9 +32,10 @@ function loadVideoList(vp) {
 
     	 //search video from server
 		  $('.VideoName').click(function() {
-		    var videoName = $(this).text();;
+        var i = $(this).index();
+		    var videoFileName = videoList[i].fileName;
 		    f = undefined;
-		    vp.loadSrc("video/" + videoName, "video/mp4");
+		    vp.loadSrc("video/" + videoFileName, "video/mp4");
         isPlayingCloudVideo = true;
 		  });
     }
@@ -66,13 +68,14 @@ function registerListeners(socket, vp) {
   $('#bullet_submit button').click(function() {
     var input = $('#bullet_submit input');
     var inputValue = input.val();
-    console.log(inputValue);
+    
     input.val('');
     if(vp.isLoaded() && isPlayingCloudVideo) {
       var bullet = {
         comment: inputValue,
         time: vp.getCurrentVideoTime()
       };
+      console.log("emit bullet: " + inputValue);
       socket.emitBullet(bullet);
     } else {
       console.log("no cloud video is loaded");
