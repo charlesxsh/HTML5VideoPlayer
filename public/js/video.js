@@ -297,10 +297,11 @@ class VideoPlayer
     {
       var currVideoTime = this.getCurrentVideoTime();
       var bulletTime = this.commentsToTimeout[bulletElement.innerText];
-      var timeout = bulletTime - currVideoTime;
+      var timeout = (bulletTime - currVideoTime)*1000;
       if(timeout > 0){ //only add bullet that startTime is after currentTime
         if(bulletElement.parentNode != this.videoareaElement)
         {
+          console.log("here");
           this.videoareaElement.appendChild(bulletElement);
         }
         var temp = window.setTimeout(function(parent, bulletElement) {        
