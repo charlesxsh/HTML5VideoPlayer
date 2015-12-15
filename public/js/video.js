@@ -252,6 +252,10 @@ class VideoPlayer
     this.videoareaElement.appendChild(bulletElement);
     this.bulletElements.push(bulletElement);
     this.commentsToTimeout[bullet["comment"]] = bullet["time"];
+    bulletElement.addEventListener("transitionend", function(event){
+      console.log('Transition has finished');
+      event.target.parentNode.removeChild(event.target);
+    }, false);
   }
   
   dyAddBulletToVideo(bullet)
@@ -262,10 +266,13 @@ class VideoPlayer
     this.videoareaElement.appendChild(bulletElement);
     this.bulletElements.push(bulletElement);
     this.commentsToTimeout[bullet["comment"]] = bullet["time"];
+     bulletElement.addEventListener("transitionend", function(event){
+      console.log('Transition has finished');
+      event.target.parentNode.removeChild(event.target);
+    }, false);
     setTimeout(function() {
       bulletElement.classList.toggle("move");
     }, 1000);
-    
   }
   /**
    * wrapper function for adding a array for json of bullet to video
