@@ -12,8 +12,8 @@ window.onload = function() {
 
   videoPlayer = new VideoPlayer(document.getElementById('playerarea'));
   init();
-  
-  loadVideoList(videoPlayer);
+
+  loadVideoList(videoPlayer, socket);
   registerListeners(socket, videoPlayer);
   handleBullet(videoPlayer, socket);
 }
