@@ -6,6 +6,7 @@ class BulletDatabase {
   
   constructor() {
     const databaseFile = "database/bullet.db";
+    //existsSync deprecated
     this.exists = require('fs').existsSync(databaseFile);
     this.db = new (require('sqlite3').verbose()).Database(databaseFile);
   }
@@ -16,6 +17,54 @@ class BulletDatabase {
         'fileName TEXT PRIMARY KEY, ' +
         'title TEXT' +
       ')'
+    );
+  }
+
+  //SELECT * FROM files
+  selectAllVideoInfoAndSend(res) {
+    this.db.all("SELECT rowid AS id, fileName, title FROM files", function(err, rows) {
+      if (err) throw err;
+      if(rows.length > 0) {
+        console.log(rows);
+        var videoEntries = [];
+        for(var i = 0; i < rows.length; i++) {
+          videoEntries.push({fileName: rows[i].fileName, title: rows[i].title});
+          console.log(rows[i]);
+        }
+        res.end(JSON.stringify(videoEntries));
+      }
+    });
+  }
+
+  selectAllBulletFromVideoAndSend(res, videoFileName) {
+    this.db.all("SELECT comment, time FROM "+videoFileName, function(err, rows) {
+      if(err) throw err;
+      res.end(JSON.stringify(rows));
+    });
+  }
+
+  //msg: the bullet massage
+  insertNewBullet(msg) {
+    //TODO: should check for err
+    this.db.run("INSERT INTO "+ msg.videoFileName +" VALUES ($comment, $time)", {
+      $comment: msg.comment,
+      $time: msg.time
+    });
+  }
+
+  insertNewVideoFile(videoFileName, videoTitle) {
+    //TODO: should check for err
+    this.db.run("INSERT INTO files VALUES ('"+ videoFileName +"','"+ videoTitle +"')");
+  }
+
+  //use the videoFileName as the table name for a bullet table that is associated with this video file
+  createNewBulletTable(videoFileName) {
+    //TODO: should check for err
+    this.db.run(
+      "CREATE TABLE IF NOT EXISTS "+videoFileName+" ("+
+        "comment TEXT, " +
+        "time INT" +
+      ")"
     );
   }
 }

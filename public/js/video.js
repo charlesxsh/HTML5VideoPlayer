@@ -1,9 +1,10 @@
 "use strict"
 var is3d = false;
+
 function btn_playpause(event)
 {
   var video = document.getElementsByTagName("video")[0];
-  if(video.paused == true)
+  if(video.paused == true && video.readyState == 4)
   {
     video.play();
     event.target.style.backgroundImage = "url('./src/suspend.png')";
@@ -15,38 +16,26 @@ function btn_playpause(event)
   }
 }
 
+function video_starttoplay(event)
+{
+    videoPlayer.updateBulletsTime();
+}
+
+function video_suspend(event)
+{
+    videoPlayer.suspendAllBullets();
+}
 function btn_fullscreen(event)
 {
-    var video = document.getElementsByTagName("video")[0];
-    if (!document.fullscreenElement &&    // alternative standard method
-      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
-    if (video.requestFullscreen) {
-      video.requestFullscreen();
-    } else if (video.msRequestFullscreen) {
-      video.msRequestFullscreen();
-    } else if (video.mozRequestFullScreen) {
-      video.mozRequestFullScreen();
-    } else if (video.webkitRequestFullscreen) {
-      video.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-    }
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
-  }
-
+    var playerArea = document.getElementById('playerarea');
+    playerArea.classList.toggle('fullscreen');
 }
 
 function barseek_mousedown(event)
 {
   var video = document.getElementsByTagName("video")[0];
   video.pause();
+
 }
 
 function barseek_mouseup(event)
@@ -119,6 +108,7 @@ function btnthree_click(event)
 }
 class VideoPlayer
 {
+   
   /*
    @param videoarea div element that hold html5 video element
    */
@@ -130,7 +120,8 @@ class VideoPlayer
     this.videoElement.style.height = "100%"
     this.videoElement.style.width = "100%"
     this.videoElement.addEventListener("timeupdate", video_timeupdate);
-
+    this.videoElement.addEventListener("play",video_starttoplay);
+    this.videoElement.addEventListener("pause", video_suspend);
     var videoSource = document.createElement("source");
     videoSource.type = "";
     videoSource.src = "";
@@ -140,6 +131,10 @@ class VideoPlayer
     this.videoareaElement.appendChild(this.videoElement);
     useDefault = useDefault || false;
     this.setupControls(useDefault);
+    
+    this.commentsToTimeout = {}; //to store all bullets' comments received, and map them with their start time
+    this.bulletElements = []; // to store all bulletElements in div
+    this.bulletElementsSchedule = []; //store all setTimeout function return value
   }
 
   loadSrc(src, type)
@@ -221,8 +216,9 @@ class VideoPlayer
     }
   }
 
-  /*
-    get the current video time
+ /**
+  * get the current video time
+  * @return current time in double 
   */
   getCurrentVideoTime()
   {
@@ -243,6 +239,115 @@ class VideoPlayer
         return false;
     }
   }
+  
+  /**
+  * add single bullet json to video
+  * @param bullet A json structure of bullet
+  */
+  addBulletToVideo(bullet)
+  {
+    var bulletElement = document.createElement("div");
+    bulletElement.className += "bulletdiv";
+    bulletElement.innerText = bullet["comment"];
+    this.videoareaElement.appendChild(bulletElement);
+    this.bulletElements.push(bulletElement);
+    this.commentsToTimeout[bullet["comment"]] = bullet["time"];
+    bulletElement.addEventListener("transitionend", function(event){
+      console.log('Transition has finished');
+      event.target.parentNode.removeChild(event.target);
+    }, false);
+  }
+  
+  dyAddBulletToVideo(bullet)
+  {
+    var bulletElement = document.createElement("div");
+    bulletElement.className += "bulletdiv";
+    bulletElement.innerText = bullet["comment"];
+    this.videoareaElement.appendChild(bulletElement);
+    this.bulletElements.push(bulletElement);
+    this.commentsToTimeout[bullet["comment"]] = bullet["time"];
+     bulletElement.addEventListener("transitionend", function(event){
+      console.log('Transition has finished');
+      event.target.parentNode.removeChild(event.target);
+    }, false);
+    setTimeout(function() {
+      bulletElement.classList.toggle("move");
+    }, 800);
+  }
+  /**
+   * wrapper function for adding a array for json of bullet to video
+   */
+  addBulletsToVideo(bulletsJsonArray)
+  {
+    bulletsJsonArray.forEach(this.addBulletToVideo, this);
+  }
+  
+  /**
+   * set up single bullet div element 
+   *
+   */
+  setBulletTimeToStart(bulletElement)
+  {
+    if(bulletElement.classList.contains('suspend'))
+    {
+      bulletElement.classList.toggle('move');
+      bulletElement.style.left = "0px";
+    }
+    else
+    {
+      var currVideoTime = this.getCurrentVideoTime();
+      var bulletTime = this.commentsToTimeout[bulletElement.innerText];
+      var timeout = (bulletTime - currVideoTime)*1000;
+      if(timeout > 0){ //only add bullet that startTime is after currentTime
+        if(bulletElement.parentNode != this.videoareaElement)
+        {
+          console.log("here");
+          this.videoareaElement.appendChild(bulletElement);
+        }
+        var temp = window.setTimeout(function(parent, bulletElement) {        
+            bulletElement.classList.toggle("move");
+            bulletElement.style.left = "0px";
+        }, timeout, this.videoareaElement, bulletElement);
+        this.bulletElementsSchedule.push(temp);
+      }
+    }
+  }
+  
+  clearAllTimeOut()
+  {
+    if(this.bulletElementsSchedule.length > 0)
+    {
+      this.bulletElementsSchedule.forEach(function(element) {
+          clearTimeout(element);
+      }, this); 
+      this.bulletElementsSchedule.length = 0;
+    }
+  }
+  
+  updateBulletsTime()
+  {
+    this.clearAllTimeOut();
+    this.bulletElements.forEach(this.setBulletTimeToStart, this);
+  }
+  
+  suspendAllBullets()
+  {
+    this.clearAllTimeOut();
+    this.bulletElements.forEach(function(element) {
+      if(element.classList.contains('move'))
+      {
+         var computedStyle = window.getComputedStyle(element),
+             leftIndex = computedStyle.getPropertyValue('left');
+        element.style.left = leftIndex;
+        element.classList.remove('move');
+        if(!element.classList.contains('suspend'))
+        {
+          element.classList.toggle('suspend');
+        }
+      }
+    }, this);
+  }
+  
 }
 
 /*
