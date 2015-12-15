@@ -3,16 +3,18 @@ var f; //video file
 var isPlayingCloudVideo = false;
 var videoList;
 var currentVideoFileName;
-
+var videoPlayer;
 window.onload = function() {
 
   var socket = new SocketManager();
-  var vp = new VideoPlayer(document.getElementById('playerarea'));
+  videoPlayer = new VideoPlayer(document.getElementById('playerarea'));
   init();
-  loadVideoList(vp);
-  registerListeners(socket, vp);
+  loadVideoList(videoPlayer);
+  registerListeners(socket, videoPlayer);
 
-  handleBullet(socket);
+  handleBullet(videoPlayer, socket);
+  
+
 }
 
 function loadVideoList(vp) {

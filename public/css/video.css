@@ -1,3 +1,6 @@
+/**
+ * all normal element z-index should be 3
+ */
 #playerarea
 {
   height: 480px;
@@ -23,6 +26,15 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 2147483647;
 }
+
+#playerarea.fullscreen{
+    z-index: 3; 
+    width: 100%; 
+    height: 100%; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+ }
 
 #playerarea:hover #video-control-panel {
 	opacity: .9;
