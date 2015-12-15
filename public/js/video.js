@@ -4,14 +4,16 @@ var is3d = false;
 function btn_playpause(event)
 {
   var video = document.getElementsByTagName("video")[0];
-  if(video.paused == true)
+  if(video.paused == true && video.readyState == 4)
   {
     video.play();
+    videoPlayer.updateBulletsTime();
     event.target.style.backgroundImage = "url('./src/suspend.png')";
   }
   else
   {
     video.pause();
+    videoPlayer.suspendAllBullets();
     event.target.style.backgroundImage = "url('./src/play.png')";
   }
 }
@@ -236,7 +238,7 @@ class VideoPlayer
   }
   
   /**
-  * add bullet comment to video
+  * add single bullet json to video
   * @param bullet A json structure of bullet
   */
   addBulletToVideo(bullet)
@@ -247,14 +249,30 @@ class VideoPlayer
     this.videoareaElement.appendChild(bulletElement);
     this.bulletElements.push(bulletElement);
     this.commentsToTimeout[bullet["comment"]] = bullet["time"];
-    
   }
   
+  dyAddBulletToVideo(bullet)
+  {
+    var bulletElement = document.createElement("div");
+    bulletElement.className += "bulletdiv";
+    bulletElement.innerText = bullet["comment"];
+    this.videoareaElement.appendChild(bulletElement);
+    this.bulletElements.push(bulletElement);
+    this.commentsToTimeout[bullet["comment"]] = bullet["time"];
+    bulletElement.classList.toggle("move");
+  }
+  /**
+   * wrapper function for adding a array for json of bullet to video
+   */
   addBulletsToVideo(bulletsJsonArray)
   {
     bulletsJsonArray.forEach(this.addBulletToVideo, this);
   }
   
+  /**
+   * set up single bullet div element 
+   *
+   */
   setBulletTimeToStart(bulletElement)
   {
     if(bulletElement.classList.contains('suspend'))
@@ -304,10 +322,6 @@ class VideoPlayer
     }, this);
   }
   
-  continueAllBullets()
-  {
-    this.bulletElements.forEach(this.setBulletTimeToStart,this);
-  }
 }
 
 /*
