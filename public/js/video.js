@@ -299,6 +299,10 @@ class VideoPlayer
       var bulletTime = this.commentsToTimeout[bulletElement.innerText];
       var timeout = bulletTime - currVideoTime;
       if(timeout > 0){ //only add bullet that startTime is after currentTime
+        if(bulletElement.parentNode != this.videoareaElement)
+        {
+          this.videoareaElement.appendChild(bulletElement);
+        }
         var temp = window.setTimeout(function(parent, bulletElement) {        
             bulletElement.classList.toggle("move");
             bulletElement.style.left = "0px";
