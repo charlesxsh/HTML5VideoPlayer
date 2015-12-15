@@ -272,7 +272,7 @@ class VideoPlayer
     }, false);
     setTimeout(function() {
       bulletElement.classList.toggle("move");
-    }, 1000);
+    }, 800);
   }
   /**
    * wrapper function for adding a array for json of bullet to video
