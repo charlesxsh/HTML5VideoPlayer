@@ -4,18 +4,24 @@ var isPlayingCloudVideo = false;
 var videoList;
 var currentVideoFileName;
 
+
 window.onload = function() {
 
-  var socket = new SocketManager();
+
+  //socket.initSocketBullet();
   var vp = new VideoPlayer(document.getElementById('playerarea'));
   init();
-  loadVideoList(vp);
+  var socket = new SocketManager();
+  socket.initSocket();
+  loadVideoList(vp, socket);
   registerListeners(socket, vp);
 
+
+  //socket.initSocketUpload();
   handleBullet(socket);
 }
 
-function loadVideoList(vp) {
+function loadVideoList(vp, socket) {
   $.ajax({
     url: "video-list",
     success: function(data) {
@@ -36,10 +42,19 @@ function loadVideoList(vp) {
         var i = $(this).index();
 		    var videoFileName = videoList[i].fileName;
 		    f = undefined;
+        if(currentVideoFileName) {
+          socket.emitLeaveRoom(currentVideoFileName);
+        }
+        socket.emitJoinRoom(videoFileName);
+        
+        ////TODO get all bullets
+        $.get("bullet/"+videoFileName, function( data ) {
+          console.log('get bullet: ' + data);
+        });
+
 		    vp.loadSrc("video/" + videoFileName, "video/mp4");
         isPlayingCloudVideo = true;
         currentVideoFileName = videoFileName;
-        //TODO get all bullets
 		  });
     }
   });
@@ -47,42 +62,16 @@ function loadVideoList(vp) {
 
 function registerListeners(socket, vp) {
   document.getElementById('input_select_video').addEventListener('change', function(event) {
-    f = event.target.files[0];
-    if(f) {
-      console.log(f.name);
-      URL.revokeObjectURL(url);
-      url = URL.createObjectURL(f);
-      vp.loadSrc(url, "video/mp4");
-    }
+    f = selectLocalVideo(vp, event);
   });
 
-  $('#select_video').click(function(){
-    $('#input_select_video').click();
-  });
+  $('#select_video').click(clickInputButton);
 
   $('#upload_video').click(function() {
-    console.log(f);
-    if(f) {
-      console.log("try to stream " + f.name);
-      socket.emitVideoStream(f);
-    }
+    uploadFile(f, socket);
   });
 
   $('#bullet_submit button').click(function() {
-    var input = $('#bullet_submit input');
-    var inputValue = input.val();
-    
-    input.val('');
-    if(vp.isLoaded() && isPlayingCloudVideo) {
-      var bullet = {
-        comment: inputValue,
-        time: vp.getCurrentVideoTime(),
-        videoFileName: currentVideoFileName
-      };
-      console.log("emit bullet: " + inputValue);
-      socket.emitBullet(bullet);
-    } else {
-      console.log("no cloud video is loaded");
-    }
+    submitBullet(vp, socket);
   });
 }
