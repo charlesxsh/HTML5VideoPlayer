@@ -1,6 +1,3 @@
-body {
-
-}
 
 section {
 	margin-top: 60px;
@@ -54,19 +51,19 @@ section {
     position: absolute;
     z-index: 5;
 	top: 5px;
-	margin-left: 100%;
-    -webkit-transition: all 2.5s linear;
-	-moz-transition: all 2.5s linear;
-	-ms-transition: all 2.5s linear;
-	-o-transition: all 2.5s linear;
-	transition: all 2.5s linear;
+	left: 800px;
+    -webkit-transition: all 5s linear;
+	-moz-transition: all 5s linear;
+	-ms-transition: all 5s linear;
+	-o-transition: all 5s linear;
+	transition: all 5s linear;
 
 }
 
 
 .bulletdiv.move
 {
-	margin-left: 0%;
+	left: 0px;
 }
 
 /*don't delete this empty css class!!!!*/

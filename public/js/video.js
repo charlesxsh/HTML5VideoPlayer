@@ -7,22 +7,23 @@ function btn_playpause(event)
   if(video.paused == true && video.readyState == 4)
   {
     video.play();
-    videoPlayer.updateBulletsTime();
     event.target.style.backgroundImage = "url('./src/suspend.png')";
   }
   else
   {
     video.pause();
-    videoPlayer.suspendAllBullets();
     event.target.style.backgroundImage = "url('./src/play.png')";
   }
 }
 
-function fullScreenVideo(video)
+function video_starttoplay(event)
 {
-  video.style.position = "absolute";
-  video.style.height = window.innerHeight;
-  video.style.width = window.innerWidth;
+    videoPlayer.updateBulletsTime();
+}
+
+function video_suspend(event)
+{
+    videoPlayer.suspendAllBullets();
 }
 function btn_fullscreen(event)
 {
@@ -34,6 +35,7 @@ function barseek_mousedown(event)
 {
   var video = document.getElementsByTagName("video")[0];
   video.pause();
+
 }
 
 function barseek_mouseup(event)
@@ -118,7 +120,8 @@ class VideoPlayer
     this.videoElement.style.height = "100%"
     this.videoElement.style.width = "100%"
     this.videoElement.addEventListener("timeupdate", video_timeupdate);
-
+    this.videoElement.addEventListener("play",video_starttoplay);
+    this.videoElement.addEventListener("pause", video_suspend);
     var videoSource = document.createElement("source");
     videoSource.type = "";
     videoSource.src = "";
@@ -259,7 +262,10 @@ class VideoPlayer
     this.videoareaElement.appendChild(bulletElement);
     this.bulletElements.push(bulletElement);
     this.commentsToTimeout[bullet["comment"]] = bullet["time"];
-    bulletElement.classList.toggle("move");
+    setTimeout(function() {
+      bulletElement.classList.toggle("move");
+    }, 1000);
+    
   }
   /**
    * wrapper function for adding a array for json of bullet to video
@@ -278,6 +284,7 @@ class VideoPlayer
     if(bulletElement.classList.contains('suspend'))
     {
       bulletElement.classList.toggle('move');
+      bulletElement.style.left = "0px";
     }
     else
     {
@@ -285,8 +292,9 @@ class VideoPlayer
       var bulletTime = this.commentsToTimeout[bulletElement.innerText];
       var timeout = bulletTime - currVideoTime;
       if(timeout > 0){ //only add bullet that startTime is after currentTime
-        var temp = window.setTimeout(function(parent, bullet) {        
-            bullet.classList.toggle("move");
+        var temp = window.setTimeout(function(parent, bulletElement) {        
+            bulletElement.classList.toggle("move");
+            bulletElement.style.left = "0px";
         }, timeout, this.videoareaElement, bulletElement);
         this.bulletElementsSchedule.push(temp);
       }
@@ -316,8 +324,14 @@ class VideoPlayer
     this.bulletElements.forEach(function(element) {
       if(element.classList.contains('move'))
       {
+         var computedStyle = window.getComputedStyle(element),
+             leftIndex = computedStyle.getPropertyValue('left');
+        element.style.left = leftIndex;
         element.classList.remove('move');
-        element.classList.toggle('suspend')
+        if(!element.classList.contains('suspend'))
+        {
+          element.classList.toggle('suspend');
+        }
       }
     }, this);
   }
