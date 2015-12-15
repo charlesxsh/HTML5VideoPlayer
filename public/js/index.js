@@ -3,22 +3,19 @@ var f; //video file
 var isPlayingCloudVideo = false;
 var videoList;
 var currentVideoFileName;
-
+var videoPlayer;
 
 window.onload = function() {
 
-
-  //socket.initSocketBullet();
-  var vp = new VideoPlayer(document.getElementById('playerarea'));
-  init();
   var socket = new SocketManager();
   socket.initSocket();
-  loadVideoList(vp, socket);
-  registerListeners(socket, vp);
 
-
-  //socket.initSocketUpload();
-  handleBullet(socket);
+  videoPlayer = new VideoPlayer(document.getElementById('playerarea'));
+  init();
+  
+  loadVideoList(videoPlayer);
+  registerListeners(socket, videoPlayer);
+  handleBullet(videoPlayer, socket);
 }
 
 function loadVideoList(vp, socket) {
