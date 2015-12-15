@@ -45,8 +45,8 @@ function loadVideoList(vp, socket) {
         socket.emitJoinRoom(videoFileName);
         
         ////TODO get all bullets
-        $.get("bullet/"+videoFileName, function( data ) {
-          console.log('get bullet: ' + data);
+        $.get("bullet/"+videoFileName, function(bullets) {
+          videoPlayer.addBulletsToVideo(JSON.parse(bullets));
         });
 
 		    vp.loadSrc("video/" + videoFileName, "video/mp4");
