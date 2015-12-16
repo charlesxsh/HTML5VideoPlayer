@@ -136,7 +136,7 @@ class VideoPlayer
     
     this.commentsToTimeout = {}; //to store all bullets' comments received, and map them with their start time
     this.bulletElements = []; // to store all bulletElements in div
-    this.bulletElementsSchedule = []; //store all setTimeout function return value
+    this.bulletsLine = 1;
   }
 
   loadSrc(src, type)
@@ -175,7 +175,7 @@ class VideoPlayer
       //to seek video time bar
       barSeek.id = "video-control-panel-barseekbar";
       barSeek.type = "range"
-      barSeek.value = 0;
+      barSeek.value = "0";
       barSeek.className += "video-control-panel-bar";
       //volume control bar
       barVol.id = "video-control-panel-barvol";
@@ -242,6 +242,41 @@ class VideoPlayer
     }
   }
   
+  bulletFly(bulletElement, delay)
+  {
+    var nowPos = window.getComputedStyle(bulletElement).getPropertyValue('left');
+    var time = (parseInt(nowPos)/100)*2; //every 100px 2 seconds
+    console.log("delay time:"+time);
+    bulletElement.style['transition-duration'] = time + "s";
+    bulletElement.style['transition-delay'] = delay + "s"
+    if(delay==0) bulletElement.style['transition-delay'] = "500ms";
+    bulletElement.style.left = "0px";
+  }
+  
+  bulletStop(bulletElement)
+  {
+    var nowPos = window.getComputedStyle(bulletElement).getPropertyValue('left');
+    bulletElement.style.left = nowPos;
+  }
+  
+  bulletIfFlying(bulletElement)
+  {
+    var bulletPos = parseInt(window.getComputedStyle(bulletElement).getPropertyValue('left'));
+    var parentEdge = this.videoareaElement.offsetWidth;
+    if(bulletPos < parentEdge){
+      return true;
+    }
+    return false;
+  }
+  
+  bulletIfLoad(bulletElement)
+  {
+    if(bulletElement.parentNode == this.videoareaElement)
+    {
+      return true;
+    }
+    return false;
+  }
   /**
   * add single bullet json to video
   * @param bullet A json structure of bullet
@@ -251,6 +286,14 @@ class VideoPlayer
     var bulletElement = document.createElement("div");
     bulletElement.className += "bulletdiv";
     bulletElement.innerText = bullet["comment"];
+    //console.log(this.videoareaElement.offsetWidth);
+    bulletElement.style.left = this.videoareaElement.offsetWidth + "px";
+    bulletElement.style.top = this.bulletsLine * 50 + "px";
+    this.bulletsLine++;
+    if(this.bulletsLine > 6)
+    {
+      this.bulletsLine = 1;
+    }
     this.videoareaElement.appendChild(bulletElement);
     this.bulletElements.push(bulletElement);
     this.commentsToTimeout[bullet["comment"]] = bullet["time"];
@@ -265,6 +308,13 @@ class VideoPlayer
     var bulletElement = document.createElement("div");
     bulletElement.className += "bulletdiv";
     bulletElement.innerText = bullet["comment"];
+    bulletElement.style.left = this.videoareaElement.offsetWidth + "px";
+    bulletElement.style.top = this.bulletsLine * 50 + "px";
+    this.bulletsLine++;
+    if(this.bulletsLine > 6)
+    {
+      this.bulletsLine = 1;
+    }
     this.videoareaElement.appendChild(bulletElement);
     this.bulletElements.push(bulletElement);
     this.commentsToTimeout[bullet["comment"]] = bullet["time"];
@@ -272,9 +322,8 @@ class VideoPlayer
       console.log('Transition has finished');
       event.target.parentNode.removeChild(event.target);
     }, false);
-    setTimeout(function() {
-      bulletElement.classList.toggle("move");
-    }, 800);
+    //when receive a bullet, just directly let it fly
+    this.bulletFly(bulletElement, 0);
   }
   /**
    * wrapper function for adding a array for json of bullet to video
@@ -290,62 +339,50 @@ class VideoPlayer
    */
   setBulletTimeToStart(bulletElement)
   {
-    if(bulletElement.classList.contains('suspend'))
+    var currVideoTime = this.getCurrentVideoTime();
+    var bulletTime = this.commentsToTimeout[bulletElement.innerText];
+    var delay = bulletTime - currVideoTime;
+    if(this.bulletIfFlying(bulletElement))
     {
-      bulletElement.classList.toggle('move');
-      bulletElement.style.left = "0px";
+        this.bulletFly(bulletElement, 0);
     }
     else
     {
-      var currVideoTime = this.getCurrentVideoTime();
-      var bulletTime = this.commentsToTimeout[bulletElement.innerText];
-      var timeout = (bulletTime - currVideoTime)*1000;
-      if(timeout > 0){ //only add bullet that startTime is after currentTime
+      if(delay > 0)
+      { //only add bullet that startTime is after currentTime
         if(bulletElement.parentNode != this.videoareaElement)
         {
-          console.log("here");
           this.videoareaElement.appendChild(bulletElement);
         }
-        var temp = window.setTimeout(function(parent, bulletElement) {        
-            bulletElement.classList.toggle("move");
-            bulletElement.style.left = "0px";
-        }, timeout, this.videoareaElement, bulletElement);
-        this.bulletElementsSchedule.push(temp);
+        this.bulletFly(bulletElement, delay);
+      }
+      else
+      {
+        if(this.bulletIfLoad(bulletElement)){
+          bulletElement.parentNode.removeChild(bulletElement);
+        }
       }
     }
   }
   
-  clearAllTimeOut()
-  {
-    if(this.bulletElementsSchedule.length > 0)
-    {
-      this.bulletElementsSchedule.forEach(function(element) {
-          clearTimeout(element);
-      }, this); 
-      this.bulletElementsSchedule.length = 0;
-    }
-  }
   
   updateBulletsTime()
   {
-    this.clearAllTimeOut();
+    this.bulletElements.forEach(function(e){
+      if(this.bulletIfLoad(e))
+      {
+        this.bulletStop(e);
+      }
+    }, this);
     this.bulletElements.forEach(this.setBulletTimeToStart, this);
   }
   
   suspendAllBullets()
   {
-    this.clearAllTimeOut();
-    this.bulletElements.forEach(function(element) {
-      if(element.classList.contains('move'))
+    this.bulletElements.forEach(function(e){
+      if(this.bulletIfLoad(e))
       {
-         var computedStyle = window.getComputedStyle(element),
-             leftIndex = computedStyle.getPropertyValue('left');
-        element.style.left = leftIndex;
-        element.classList.remove('move');
-        if(!element.classList.contains('suspend'))
-        {
-          element.classList.toggle('suspend');
-        }
+        this.bulletStop(e);
       }
     }, this);
   }
