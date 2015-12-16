@@ -24,7 +24,7 @@
 	-ms-transition: opacity .3s;
 	transition: opacity .3s;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 2147483647;
+  z-index: 100;
 }
 
 #playerarea.fullscreen{
@@ -208,7 +208,7 @@ input[type=range].video-control-panel-bar:focus::-ms-fill-upper {
 {
   position: absolute;
   top: 0px;
-  z-index:2;
+  z-index:1000;
   background-color: red;
   display: none;
 }
@@ -221,7 +221,7 @@ input[type=range].video-control-panel-bar:focus::-ms-fill-upper {
     height: 50px;
     font-weight: bold;
     position: absolute;
-    z-index: 5;
+    z-index: 100;
 	/*top: 5px;
 	left: 800px;*/
     -webkit-transition: all linear;
