@@ -26,13 +26,13 @@ socketManager.initSocket();
 var port = process.env.PORT || 3000;
 
 //get video screen shot
-function getScreenshot(videopath,)
+function getScreenshot(videopath, savepath)
 {
   var proc = new ffmpeg(videopath)
   .takeScreenshots({
       count: 1,
       timemarks: [ '5' ] // number of seconds
-    }, '/path/to/thumbnail/folder', function(err) {
+    }, savepath, function(err) {
     console.log('screenshots were saved')
   });
 }
