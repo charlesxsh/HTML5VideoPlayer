@@ -5,8 +5,6 @@ var http = require('http');
 var path = require('path');
 var fs = require('fs');
 var bodyParser = require('body-parser');
-var ffmpeg = require('fluent-ffmpeg');
-
 
 
 var BulletDatabase = require('./database');
@@ -25,21 +23,7 @@ socketManager.initSocket();
 
 var port = process.env.PORT || 3000;
 
-//get video screen shot
-function getScreenshot(videopath)
-{
-  var pathResult = path.parse(videopath);
-  var screenshotFileName = pathResult.name + '.png';
-  ffmpeg(videopath)
-  .screenshots({
-    timestamps: [3],
-    filename: screenshotFileName,
-    folder: pathResult.dir,
-    size: '200x150'
-  });
-}
 
-getScreenshot('public/video/video1450065139022');
 //middle ware
 function log(req, res, next) {
   console.log('req: '+req.originalUrl);
@@ -75,6 +59,7 @@ app.get('/bullet/*', function(req, res) {
 //start server
 httpServer.listen(port, function() {
 	console.log('listening on port: ' + port);
+
 });
 
 process.on('SIGINT', function() {
