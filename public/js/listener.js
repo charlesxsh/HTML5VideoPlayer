@@ -5,6 +5,7 @@ function selectLocalVideo(vp, event) {
     URL.revokeObjectURL(url);
     url = URL.createObjectURL(file);
     vp.loadSrc(url, "video/mp4");
+    $('section').css({'visibility':'visible'});
     return file;
   } else {
   	return undefined;
@@ -43,6 +44,7 @@ function queryVideo(event) {
   videoPlayer.loadSrc("video/" + videoFileName, "video/mp4");
   isPlayingCloudVideo = true;
   currentVideoFileName = videoFileName;
+  $('section').css({'visibility':'visible'});
 }
 
 function submitBullet(event) {
@@ -99,3 +101,31 @@ function handleBullet(videoPlayer,socket){
 
 };
 
+function populateVideoTable(element, count) {
+  console.log(count);
+  var rowCount = -1;
+  if(count % 4 === 0) {
+    //new row
+    rowCount++;
+    $('#videos_from_server table tbody ').append(
+      "<tr>" +
+        "<td>"+
+          "<div class='VideoName'>" +         
+            "<img src='src/p' width='220px'>" +
+            "<h4>"+element.title+"</h4>" +
+          "</div>" +
+        "</td>" +
+      "</tr>"
+    );
+  } else {
+    //same row
+    $($('#videos_from_server table tbody tr').get(rowCount)).append(
+      "<td>"+
+        "<div class='VideoName'>" +         
+          "<img src='src/p' width='220px'>" +
+          "<h4>"+element.title+"</h4>" +
+        "</div>" +
+      "</td>"
+    );
+  }
+}

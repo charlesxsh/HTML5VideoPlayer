@@ -24,15 +24,16 @@ function loadVideoList(vp, socket) {
     url: "video-list",
     success: function(data) {
     	videoList = JSON.parse(data);
-    	videoList.forEach(function(element) {
-    		$("#video_list").append(
-					"<li class='VideoName'>" +
-            "<a>" +
-              "<span class='mif-film icon'></span>" +
-              element.title +
-            "</a>" +
-          "</li>"
-        );
+    	videoList.forEach(function(element, index) {
+    	// 	$("#video_list").append(
+					// "<li class='VideoName'>" +
+     //        "<a>" +
+     //          "<span class='mif-film icon'></span>" +
+     //          element.title +
+     //        "</a>" +
+     //      "</li>"
+     //    );
+        populateVideoTable(element, index);
     	});
 
     	 //search video from server

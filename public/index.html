@@ -78,28 +78,35 @@
     </div>
 
     <div id="threedvideocontainer"></div>
+
     <section>
-      <div id="playerarea"></div>
-      <div id="side">
-        <div id="chat_area">
-          <ul id="messages"></ul>
+      <div id="player_wrapper">
+        <div id="playerarea"></div>
+        <div id="side">
+          <div id="chat_area">
+            <ul id="messages"></ul>
+          </div>
         </div>
       </div>
+
+      <div id="submit_wrapper" class="DefaultWidth">
+          <div id="bullet_submit" class="input-control text" data-role="input">
+            <input type="text"><button class="button"><span class="mif-shit"></span></button>
+          </div>
+          <div id="chat_submit" class="input-control text" data-role="input">
+            <input type="text"><button class="button"><span class="mif-paper-plane"></span></button>
+          </div>
+      </div>
     </section>
-
-    <div id="submit_wrapper" class="DefaultWidth">
-
-        <div id="bullet_submit" class="input-control text" data-role="input">
-          <input type="text"><button class="button"><span class="mif-shit"></span></button>
-        </div>
-        <div id="chat_submit" class="input-control text" data-role="input">
-          <input type="text"><button class="button"><span class="mif-paper-plane"></span></button>
-        </div>
-    </div>
 
     <div id="videos_from_server">
       <ul id="video_list" class="sidebar darcula">
       </ul>
+
+      <table>
+        <tbody>
+        </tbody>
+      </table>
     </div>
 
     <input id="input_select_video" type="file" hidden>
