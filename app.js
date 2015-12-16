@@ -5,7 +5,7 @@ var http = require('http');
 var path = require('path');
 var fs = require('fs');
 var bodyParser = require('body-parser');
-
+var ffmpeg = require('fluent-ffmpeg');
 
 
 
@@ -25,7 +25,17 @@ socketManager.initSocket();
 
 var port = process.env.PORT || 3000;
 
-
+//get video screen shot
+function getScreenshot(videopath)
+{
+  var proc = new ffmpeg(videopath)
+  .takeScreenshots({
+      count: 1,
+      timemarks: [ '5' ] // number of seconds
+    }, '/path/to/thumbnail/folder', function(err) {
+    console.log('screenshots were saved')
+  });
+}
 //middle ware
 function log(req, res, next) {
   console.log('req: '+req.originalUrl);
