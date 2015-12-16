@@ -40,8 +40,12 @@ function submitBullet(vp, socket) {
   }
 }
 
-function queryVideo() {
-  var i = $(this).index();
+function queryVideo(event) {
+  //get event data
+  var socket = event.data.socket;
+  var videoPlayer =  event.data.videoPlayer;
+
+  var i = $((event.delegateTarget)).index();
   var videoFileName = videoList[i].fileName;
   f = undefined;
   if(currentVideoFileName) {
@@ -54,11 +58,7 @@ function queryVideo() {
     videoPlayer.addBulletsToVideo(JSON.parse(bullets));
   });
 
-  vp.loadSrc("video/" + videoFileName, "video/mp4");
+  videoPlayer.loadSrc("video/" + videoFileName, "video/mp4");
   isPlayingCloudVideo = true;
   currentVideoFileName = videoFileName;
 }
-
-      $('.VideoName').click(function() {
-
-      });
