@@ -212,3 +212,34 @@ input[type=range].video-control-panel-bar:focus::-ms-fill-upper {
   background-color: red;
   display: none;
 }
+
+/*top: 5px;*/
+.bulletdiv {
+	font-size: 20px;
+	color: white;
+    width: 100px;
+    height: 50px;
+    font-weight: bold;
+    position: absolute;
+    z-index: 5;
+	/*top: 5px;
+	left: 800px;*/
+    -webkit-transition: all linear;
+	-moz-transition: all  linear;
+	-ms-transition: all  linear;
+	-o-transition: all  linear;
+	transition: all  linear;
+  /*transition-delay: 800ms;*/
+}
+
+
+/*.bulletdiv.move
+{
+	left: 0px;
+}*/
+
+/*don't delete this empty css class!!!!*/
+.bulletdiv.suspend
+{
+	
+}
