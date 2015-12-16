@@ -7,7 +7,7 @@ class BulletDatabase {
   constructor() {
     const databaseFile = "database/bullet.db";
     //existsSync deprecated
-    this.exists = require('fs').existsSync(databaseFile);
+    //this.exists = require('fs').existsSync(databaseFile);
     this.db = new (require('sqlite3').verbose()).Database(databaseFile);
   }
 
