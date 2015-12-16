@@ -354,7 +354,7 @@ class VideoPlayer
   detect esc to quit 3d video player mode
   */
 window.addEventListener("keyup", function(event){
-  if(event.which == "27")
+  if(event.which == 27)
   {
     var container = document.getElementById("threedvideocontainer");
     container.style.display = "none";
