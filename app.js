@@ -26,7 +26,7 @@ socketManager.initSocket();
 var port = process.env.PORT || 3000;
 
 //get video screen shot
-function getScreenshot(videopath)
+function getScreenshot(videopath,)
 {
   var proc = new ffmpeg(videopath)
   .takeScreenshots({
