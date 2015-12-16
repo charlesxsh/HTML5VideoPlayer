@@ -1,5 +1,6 @@
 "use strict"
 var is3d = false;
+var isVideofullscreen = false;
 
 function btn_playpause(event)
 {
@@ -30,11 +31,13 @@ function btn_fullscreen(event)
     var playerArea = document.getElementById('playerarea');
     if(playerArea.classList.contains('fullscreen')){
       playerArea.classList.remove('fullscreen');
+      isVideofullscreen = false;
       playerArea.style.zIndex = "200";
       videoPlayer.suspendAllBullets();
       videoPlayer.bulletReturnWindow();
       videoPlayer.updateBulletsTime();
     }else{
+      isVideofullscreen = true;
       playerArea.classList.toggle('fullscreen');
       videoPlayer.suspendAllBullets();
       videoPlayer.bulletScreen();
@@ -257,7 +260,7 @@ class VideoPlayer
   {
     var nowPos = window.getComputedStyle(bulletElement).getPropertyValue('left');
     var time = (parseInt(nowPos)/100)*2; //every 100px 2 seconds
-    console.log("delay time:"+time);
+    console.log("delay time:"+delay);
     if(time == 0){
       bulletElement.parentNode.removeChild(bulletElement);
     }else{
@@ -282,7 +285,7 @@ class VideoPlayer
   
   bulletIfLoad(bulletElement)
   {
-    if(bulletElement.parentNode == this.videoareaElement)
+    if(bulletElement.parentNode)
     {
       return true;
     }
@@ -292,6 +295,7 @@ class VideoPlayer
   bulletIfFlying(bulletElement)
   {
     if(!this.bulletIfLoad(bulletElement)){
+      console.log(bulletElement.innerText+" not flying")
       return false;
     }
     
@@ -323,7 +327,6 @@ class VideoPlayer
     this.bulletElements.push(bulletElement);
     this.commentsToTimeout[bullet["comment"]] = bullet["time"];
     bulletElement.addEventListener("transitionend", function(event){
-      console.log('Transition has finished');
       event.target.parentNode.removeChild(event.target);
     }, false);
   }
@@ -344,7 +347,7 @@ class VideoPlayer
     this.bulletElements.push(bulletElement);
     this.commentsToTimeout[bullet["comment"]] = bullet["time"];
      bulletElement.addEventListener("transitionend", function(event){
-      console.log('Transition has finished');
+
       event.target.parentNode.removeChild(event.target);
     }, false);
     //when receive a bullet, just directly let it fly
@@ -375,9 +378,14 @@ class VideoPlayer
     {
       if(delay > 0)
       { //only add bullet that startTime is after currentTime
-        if(bulletElement.parentNode != this.videoareaElement)
+        if(!this.bulletIfLoad(bulletElement))
         {
           this.videoareaElement.appendChild(bulletElement);
+          if(isVideofullscreen){
+            bulletElement.style.left = window.innerWidth;
+          }else{
+            bulletElement.style.left = "640px";
+          }
         }
         this.bulletFly(bulletElement, delay);
       }
