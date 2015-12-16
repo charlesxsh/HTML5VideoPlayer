@@ -41,5 +41,24 @@ function submitBullet(vp, socket) {
 }
 
 function queryVideo() {
+  var i = $(this).index();
+  var videoFileName = videoList[i].fileName;
+  f = undefined;
+  if(currentVideoFileName) {
+    socket.emitLeaveRoom(currentVideoFileName);
+  }
+  socket.emitJoinRoom(videoFileName);
   
+  ////TODO get all bullets
+  $.get("bullet/"+videoFileName, function(bullets) {
+    videoPlayer.addBulletsToVideo(JSON.parse(bullets));
+  });
+
+  vp.loadSrc("video/" + videoFileName, "video/mp4");
+  isPlayingCloudVideo = true;
+  currentVideoFileName = videoFileName;
 }
+
+      $('.VideoName').click(function() {
+
+      });
