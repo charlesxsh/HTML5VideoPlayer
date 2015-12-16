@@ -42,32 +42,3 @@ section {
 	z-index: 0;
 }
 
-/*top: 5px;*/
-.bulletdiv {
-	color: white;
-    width: 100px;
-    height: 50px;
-    font-weight: bold;
-    position: absolute;
-    z-index: 5;
-	top: 5px;
-	left: 800px;
-    -webkit-transition: all 5s linear;
-	-moz-transition: all 5s linear;
-	-ms-transition: all 5s linear;
-	-o-transition: all 5s linear;
-	transition: all 5s linear;
-
-}
-
-
-.bulletdiv.move
-{
-	left: 0px;
-}
-
-/*don't delete this empty css class!!!!*/
-.bulletdiv.suspend
-{
-	
-}

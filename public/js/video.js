@@ -7,23 +7,25 @@ function btn_playpause(event)
   if(video.paused == true && video.readyState == 4)
   {
     video.play();
-    event.target.style.backgroundImage = "url('./src/suspend.png')";
+    //event.target.style.backgroundImage = "url('./src/suspend.png')";
   }
   else
   {
     video.pause();
-    event.target.style.backgroundImage = "url('./src/play.png')";
+    //event.target.style.backgroundImage = "url('./src/play.png')";
   }
 }
 
 function video_starttoplay(event)
 {
     videoPlayer.updateBulletsTime();
+    videoPlayer.btnPlayPause.style.backgroundImage = "url('./src/suspend.png')";
 }
 
 function video_suspend(event)
 {
     videoPlayer.suspendAllBullets();
+    videoPlayer.btnPlayPause.style.backgroundImage = "url('./src/play.png')";
 }
 function btn_fullscreen(event)
 {
@@ -158,7 +160,7 @@ class VideoPlayer
     else
     {
       var videoControlPanel = document.createElement("div");
-      var btnPlayPause = document.createElement("button");
+      this.btnPlayPause = document.createElement("button");
       var barSeek = document.createElement("input");
       var barVol = document.createElement("input");
       var btnVolumnControl = document.createElement("button");
@@ -167,9 +169,9 @@ class VideoPlayer
       //whole control panel
       videoControlPanel.id = "video-control-panel"
       //play&pause button
-      btnPlayPause.id = "video-control-panel-btnplaypause"
-      btnPlayPause.type = "button";
-      btnPlayPause.className += "control-panel-button";
+      this.btnPlayPause.id = "video-control-panel-btnplaypause"
+      this.btnPlayPause.type = "button";
+      this.btnPlayPause.className += "control-panel-button";
       //to seek video time bar
       barSeek.id = "video-control-panel-barseekbar";
       barSeek.type = "range"
@@ -194,7 +196,7 @@ class VideoPlayer
       btnThreeDMode.id = "video-control-panel-btnthreedmode";
       btnThreeDMode.innerHTML = "3D"
       //add event listener
-      btnPlayPause.addEventListener("click", btn_playpause);
+      this.btnPlayPause.addEventListener("click", btn_playpause);
       barSeek.addEventListener("mousedown", barseek_mousedown);
       barSeek.addEventListener("mouseup", barseek_mouseup);
       barSeek.addEventListener("input", barseek_input);
@@ -206,7 +208,7 @@ class VideoPlayer
       btnThreeDMode.addEventListener("click", btnthree_click);
       //add those buttons and bars to panel
       videoControlPanel.appendChild(barSeek);
-      videoControlPanel.appendChild(btnPlayPause);
+      videoControlPanel.appendChild(this.btnPlayPause);
       videoControlPanel.appendChild(btnVolumnControl);
       videoControlPanel.appendChild(barVol);
       videoControlPanel.appendChild(btnFullScreen);
@@ -349,6 +351,8 @@ class VideoPlayer
   }
   
 }
+
+
 
 /*
   detect esc to quit 3d video player mode
