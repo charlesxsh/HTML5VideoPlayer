@@ -2,6 +2,7 @@
 
 const EVENT = {
 	BULLET: 'bullet',
+	CHAT: 'chat',
 	VIDEO_UPLOAD: 'video upload',
 	VIDEO_DOWNLOAD: 'video download',
 	JOIN_ROOM: 'join room',
@@ -27,6 +28,14 @@ class SocketManager {
 
 	onBullet(callback) {
 		this.socket.on(EVENT.BULLET, callback);
+	}
+
+	emitChat(msg) {
+		this.socket.emit(EVENT.CHAT, msg);
+	}
+
+	onChat(callback) {
+		this.socket.on(EVENT.CHAT, callback);
 	}
 
 	emitVideoStream(file) {

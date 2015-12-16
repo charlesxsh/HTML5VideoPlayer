@@ -3,15 +3,17 @@ section {
 	margin-top: 60px;
 	margin-right: auto;
 	margin-left: auto;
-	width: 800px;
+	width: 880px;
+	height: 480px;
 	display: flex;
 }
 
-.Width800 {
+.DefaultWidth {
 	margin-right: auto;
 	margin-left: auto;
-	width: 800px;
+	width: 880px;
 }
+
 
 #playerarea {
 	display: inline;
@@ -21,25 +23,56 @@ section {
 
 #side{
 	display: inline;
-	width: 160px;
-	background-color: #F2F2F0;
+	width: 240px;
+	background: #F4F3DE;
+	z-index: 100;
+}
+
+
+#submit_wrapper {
+	display: flex;
+}
+
+
+#bullet_submit {
+	margin-right: auto;
+	margin-left: auto;
+	width: 640px;
+}
+
+#bullet_submit button {
+	z-index: 0;
+}
+
+
+#chat_submit {
+	margin-right: auto;
+	margin-left: auto;
+	width: 240px;
+}
+
+#chat_submit button {
+	z-index: 0;
 }
 
 #videos_from_server {
 	margin-top: 30px;
 	margin-right: auto;
 	margin-left: auto;
-	width: 800px;
+	width: 880px;
 }
 
-#bullet_submit {
-	margin-right: auto;
-	margin-left: auto;
-	width: 800px;
+#app_bar_manu {
+	right: 0;
+	position: fixed;
 }
 
-#bullet_submit button {
-	z-index: 0;
+#app_bar {
+	position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 200;
 }
 
 /*top: 5px;*/
@@ -70,4 +103,31 @@ section {
 .bulletdiv.suspend
 {
 	
+}
+
+#side {
+	overflow: hidden;
+}
+
+#chat_area { 
+	font: 13px Helvetica, Arial; 
+	margin: 0; 
+ 	padding: 0; 
+ 	box-sizing: border-box;
+ 	overflow: scroll;
+ 	height: 480px;
+}
+
+#messages li:nth-child(odd) { 
+	background: #BEAE92; 
+}
+
+#messages { 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0; 
+}
+
+#messages li { 
+	padding: 5px 10px; 
 }

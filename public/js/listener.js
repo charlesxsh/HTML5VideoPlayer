@@ -22,24 +22,6 @@ function uploadFile(file, socket) {
     }
 }
 
-function submitBullet(vp, socket) {
-  var input = $('#bullet_submit input');
-  var inputValue = input.val();
-  
-  input.val('');
-  if(vp.isLoaded() && isPlayingCloudVideo) {
-    var bullet = {
-      comment: inputValue,
-      time: vp.getCurrentVideoTime(),
-      videoFileName: currentVideoFileName
-    };
-    console.log("emit bullet: " + inputValue);
-    socket.emitBullet(bullet);
-  } else {
-    console.log("no cloud video is loaded");
-  }
-}
-
 function queryVideo(event) {
   //get event data
   var socket = event.data.socket;
@@ -62,3 +44,58 @@ function queryVideo(event) {
   isPlayingCloudVideo = true;
   currentVideoFileName = videoFileName;
 }
+
+function submitBullet(event) {
+  if(
+      (event.delegateTarget === $('#bullet_submit input').get(0) && event.which === 13) ||
+      (event.delegateTarget === $('#bullet_submit button').get(0))
+    ) {
+    if(videoPlayer.isLoaded() && isPlayingCloudVideo) {
+      var input = $('#bullet_submit input');
+      var inputValue = input.val();
+      input.val('');
+      var bullet = {
+        comment: inputValue,
+        time: videoPlayer.getCurrentVideoTime(),
+        videoFileName: currentVideoFileName
+      };
+      var socket = event.data;
+      socket.emitBullet(bullet);
+    } else {
+      console.log("no cloud video is loaded");
+    }
+  }
+}
+
+function submitChat(event) {
+  if(
+      (event.delegateTarget === $('#chat_submit input').get(0) && event.which === 13) ||
+      (event.delegateTarget === $('#chat_submit button').get(0))
+    ) {
+    if(videoPlayer.isLoaded() && isPlayingCloudVideo) {
+      var input = $('#chat_submit input');
+      var inputValue = input.val();
+      input.val('');
+      var socket = event.data;
+      socket.emitChat(inputValue);
+    } else {
+      console.log("no cloud video is loaded");
+    }
+  }
+}
+
+function handleChat(socket) {
+  socket.onChat(function(msg) {
+    $('#messages').append($('<li>').text(msg));
+  });
+}
+
+function handleBullet(videoPlayer,socket){
+  
+  //dynamically receive a bullet
+  socket.onBullet(function (msg) {
+    videoPlayer.dyAddBulletToVideo({"comment":msg.comment,"time":msg.time});
+  });
+
+};
+

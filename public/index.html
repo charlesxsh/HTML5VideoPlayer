@@ -21,44 +21,80 @@
     <script src="js/socket-manager.js"></script>
     <script src="js/three.min.js"></script>
     <script src="js/threeutil.js"></script>
-    <script src="js/handle-bullet.js"></script>
     <script src="js/listener.js"></script>
     <script src="js/index.js"></script>
     <title>HPlayer</title>
   </head>
 
   <body>
+
+    <div id="app_bar" class="app-bar white" data-role="appbar">
+      <a class="app-bar-element">
+          <span id="toggle-tiles-dropdown" class="mif-apps mif-2x"></span>
+          <div class="app-bar-drop-container"
+                  data-role="dropdown"
+                  data-toggle-element="#toggle-tiles-dropdown"
+                  data-no-close="false" style="width: 324px;">
+              <div class="tile-container bg-white">
+                  <div class="tile-small bg-blue">
+                      <div class="tile-content iconic">
+                          <span class="icon mif-facebook"></span>
+                      </div>
+                  </div>              
+                  <div class="tile-small bg-red">
+                      <div class="tile-content iconic">
+                          <span class="icon mif-pinterest"></span>
+                      </div>
+                  </div>
+                  <div class="tile-small bg-blue">
+                      <div class="tile-content iconic">
+                          <span class="icon mif-twitter"></span>
+                      </div>
+                  </div>
+                  <div class="tile-small bg-red">
+                      <div class="tile-content iconic">
+                          <span class="icon mif-google-plus"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </a>
+      <a class="app-bar-element" href="...">H Player</a>
+      <span class="app-bar-divider"></span>
+      <ul id="app_bar_manu" class="app-bar-menu">
+        <li id="select_video">
+          <a>
+            <span class="mif-file-video icon"></span>
+             Select Video
+          </a>
+        </li>
+        <li id="upload_video">
+          <a>
+            <span class="mif-cloud-upload icon"></span>
+             Upload Video
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <div id="threedvideocontainer"></div>
     <section>
       <div id="playerarea"></div>
       <div id="side">
-        <ul class="sidebar2">
-          <li>
-            <a id="select_video">
-              <span class="mif-file-video icon"></span>
-              Select Video
-            </a>
-          </li>
-          <li id="upload_video">
-            <a>
-              <span class="mif-cloud-upload icon"></span>
-              Upload Video
-            </a>
-          </li>
-          <li id="view_history">
-            <a>
-              <span class="mif-history icon"></span>
-              View History
-            </a>
-          </li>
-        </ul>
+        <div id="chat_area">
+          <ul id="messages"></ul>
+        </div>
       </div>
     </section>
 
-    <div class="Width800">
-      <div id="bullet_submit" class="input-control text" data-role="input">
-        <input type="text"><button class="button"><span class="mif-paper-plane"></span></button>
-      </div>
+    <div id="submit_wrapper" class="DefaultWidth">
+
+        <div id="bullet_submit" class="input-control text" data-role="input">
+          <input type="text"><button class="button"><span class="mif-shit"></span></button>
+        </div>
+        <div id="chat_submit" class="input-control text" data-role="input">
+          <input type="text"><button class="button"><span class="mif-paper-plane"></span></button>
+        </div>
     </div>
 
     <div id="videos_from_server">

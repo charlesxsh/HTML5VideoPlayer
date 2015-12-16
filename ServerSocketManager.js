@@ -6,6 +6,7 @@ var fs = require('fs');
 
 const EVENT = {
 	BULLET: 'bullet',
+	CHAT: 'chat',
 	VIDEO_UPLOAD: 'video upload',
 	VIDEO_DOWNLOAD: 'video download',
 	JOIN_ROOM: 'join room',
@@ -46,6 +47,10 @@ class ServerSocketManager {
 		  	console.log('bullet: ' + JSON.stringify(msg));
 		    bulletDB.insertNewBullet(msg);
 		  	io.to(msg.videoFileName).emit(EVENT.BULLET, msg);
+		  });
+
+		  socket.on(EVENT.CHAT, function(msg) {
+		  	io.to(msg.videoFileName).emit(EVENT.CHAT, msg);
 		  });
 
 		  socket.on(EVENT.JOIN_ROOM, function(msg) {

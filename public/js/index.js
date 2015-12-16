@@ -16,6 +16,7 @@ window.onload = function() {
   loadVideoList(videoPlayer, socket);
   registerListeners(socket, videoPlayer);
   handleBullet(videoPlayer, socket);
+  handleChat(socket);
 }
 
 function loadVideoList(vp, socket) {
@@ -51,7 +52,9 @@ function registerListeners(socket, vp) {
     uploadFile(f, socket);
   });
 
-  $('#bullet_submit button').click(function() {
-    submitBullet(vp, socket);
-  });
+  $('#bullet_submit button').click(socket ,submitBullet);
+  $('#bullet_submit input').keypress(socket ,submitBullet);
+
+  $('#chat_submit button').click(socket ,submitChat);
+  $('#chat_submit input').keypress(socket, submitChat);
 }
