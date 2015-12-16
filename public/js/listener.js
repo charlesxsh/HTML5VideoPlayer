@@ -39,3 +39,7 @@ function submitBullet(vp, socket) {
     console.log("no cloud video is loaded");
   }
 }
+
+function queryVideo() {
+  
+}
