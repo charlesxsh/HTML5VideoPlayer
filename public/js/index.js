@@ -4,35 +4,29 @@ var isPlayingCloudVideo = false;
 var videoList;
 var currentVideoFileName;
 var videoPlayer;
+var socket = new SocketManager();
 
-window.onload = function() {
-
-  var socket = new SocketManager();
+window.onload = function() {  
   socket.initSocket();
 
   videoPlayer = new VideoPlayer(document.getElementById('playerarea'));
   init();
-
   loadVideoList(videoPlayer, socket);
   registerListeners(socket, videoPlayer);
   handleBullet(videoPlayer, socket);
   handleChat(socket);
+  socket.onDoneUploading(function(msg) {
+    loadVideoList(videoPlayer, socket);
+  });
 }
 
 function loadVideoList(vp, socket) {
+  $('#videos_from_server table tbody').html('');
   $.ajax({
     url: "video-list",
     success: function(data) {
     	videoList = JSON.parse(data);
     	videoList.forEach(function(element, index) {
-    	// 	$("#video_list").append(
-					// "<li class='VideoName'>" +
-     //        "<a>" +
-     //          "<span class='mif-film icon'></span>" +
-     //          element.title +
-     //        "</a>" +
-     //      "</li>"
-     //    );
         populateVideoTable(element, index);
     	});
 

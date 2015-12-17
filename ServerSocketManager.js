@@ -8,7 +8,7 @@ const EVENT = {
 	BULLET: 'bullet',
 	CHAT: 'chat',
 	VIDEO_UPLOAD: 'video upload',
-	VIDEO_DOWNLOAD: 'video download',
+	DONE_UPLOADING: 'done uploading',
 	JOIN_ROOM: 'join room',
 	LEAVE_ROOM: 'leave room'
 }
@@ -38,6 +38,15 @@ class ServerSocketManager {
 		    var fileName = "video"+Date.now().toString();
 		    bulletDB.insertNewVideoFile(fileName, data.name);
 		    bulletDB.createNewBulletTable(fileName);
+			
+			var size = 0;
+			stream.on('data', function(chunk) {
+				size += chunk.length;
+				if(size === data.size) {
+					io.emit(EVENT.DONE_UPLOADING, "");
+				}
+			});
+			
 		    //TODO: should check no problem happens before pipe it into writable stream
 		    stream.pipe(fs.createWriteStream("public/video/" + fileName));
 		  });

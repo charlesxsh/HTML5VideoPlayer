@@ -1,7 +1,9 @@
 section {
-	visibility: hidden;
+	margin-top: 10%;
 }
-
+body{
+	background-color: #27b9f2;
+}
 #player_wrapper {
 	margin-top: 60px;
 	margin-right: auto;

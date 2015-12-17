@@ -4,7 +4,7 @@ const EVENT = {
 	BULLET: 'bullet',
 	CHAT: 'chat',
 	VIDEO_UPLOAD: 'video upload',
-	VIDEO_DOWNLOAD: 'video download',
+	DONE_UPLOADING: 'done uploading',
 	JOIN_ROOM: 'join room',
 	LEAVE_ROOM: 'leave room'
 }
@@ -55,11 +55,15 @@ class SocketManager {
 		          		"<span class='mif-cloud-upload icon'></span>" +
 		            	" Upload Video" +
 		        	"</a>"
-		      );
+		      	);
             }
         });
 
         blobStream.pipe(stream);		
+	}
+	
+	onDoneUploading(callback) {
+		this.socket.on(EVENT.DONE_UPLOADING, callback);
 	}
 
 	emitJoinRoom(room) {

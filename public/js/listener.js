@@ -33,8 +33,11 @@ function queryVideo(event) {
   //get event data
   var socket = event.data.socket;
   var videoPlayer =  event.data.videoPlayer;
-
-  var i = $((event.delegateTarget)).index();
+  
+  var colIndex = $((event.delegateTarget)).parent().parent().index();
+  var rowIndex = $((event.delegateTarget)).parent().index();
+  
+  var i = colIndex*4 + rowIndex;
   var videoFileName = videoList[i].fileName;
   f = undefined;
   if(currentVideoFileName) {
