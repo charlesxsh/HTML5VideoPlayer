@@ -19,6 +19,12 @@ function clickInputButton() {
 function uploadFile(file, socket) {
     if(file) {
       console.log("try to stream " + file.name);
+      $('#upload_video').html(
+        "<a>" +
+          "<span class='mif-spinner5 mif-ani-spin icon'></span>" +
+            " Uploading" +
+        "</a>"
+      );
       socket.emitVideoStream(file);
     }
 }
