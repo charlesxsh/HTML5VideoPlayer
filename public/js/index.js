@@ -43,9 +43,9 @@ function registerListeners(socket, vp) {
 
   $('#select_video').click(clickInputButton);
 
-  $('#upload_video').click(function() {
-    uploadFile(f, socket);
-  });
+  // $('#upload_video').click(function() {
+  //   uploadFile(f, socket);
+  // });
 
   $('#bullet_submit button').click(socket ,submitBullet);
   $('#bullet_submit input').keypress(socket ,submitBullet);
